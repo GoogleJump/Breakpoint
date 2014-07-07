@@ -26,9 +26,10 @@ function canvasOverlay(bounds, map) {
     this.bounds_ = bounds;
     this.map_ = map;
 
-    // Define a property to hold this canvas's div.
+    // Define a property to hold this canvas's div + the canvas.
     // We'll actually create this div upon receipt of
     // the onAdd() method so we'll leave it null for now.
+    this.canvas_ = null;
     this.div_ = null;
 
     // Explicitly call setMap on this overlay.
@@ -46,15 +47,22 @@ canvasOverlay.prototype.onAdd = function() {
     div.style.position = 'absolute';
 
     // Create the canvas element and attach it to the div.
-    // TODO canvas
-    //var canvas = document.createElement('canvas');
-    var canvas = document.createTextNode('hi there and greetings');
-    //canvas.id = 'heat';
-    //canvas.style.width = '100%';
-    //canvas.style.height = '100%';
-    canvas.set
-    div.appendChild(canvas);
+    var canvas = document.createElement('canvas');
+    canvas.id = 'heat';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
 
+    var ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.arc(20, 20, 50, 0, 2 * Math.PI, false);
+    ctx.fillStyle = 'green';
+    ctx.fill();
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = '#003300';
+    ctx.stroke();
+
+    this.canvas_ = canvas;
+    div.appendChild(canvas);
     this.div_ = div;
 
     // Add the element to the "overlayLayer" pane.
@@ -81,6 +89,7 @@ canvasOverlay.prototype.draw = function() {
     div.style.top = ne.y + 'px';
     div.style.width = (ne.x - sw.x) + 'px';
     div.style.height = (sw.y - ne.y) + 'px';
+
 };
 
 // The onRemove() method will be called automatically from the API if 
