@@ -1,11 +1,12 @@
 Breakpoint
 ==========
 
-Heatmaps for sound.
+Heatmaps for sound. Server stuff still heavily in progress, so those working on JS stuff, stick to opening the html files with your browser rather than navigating there through the server.
 
 ##Setup
     sudo apt-get install python-pip
     pip install Flask
+    pip install Flask-OAuth
 
 ##Usage
     python app.py
