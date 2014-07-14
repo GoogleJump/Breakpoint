@@ -105,12 +105,7 @@ def login():
         session['username'] = request.form['username']
         flash('logged in!')
         return redirect(url_for('index'))
-    return """
-        <form action="" method="post">
-            <p><input type=text name=username>
-            <p><input type=submit value=Login>
-        </form>
-    """
+    return render_template("login.html")
 #
 #@app.route('/logout')
 #@login_required
