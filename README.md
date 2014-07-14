@@ -3,10 +3,11 @@ Breakpoint
 
 Heatmaps for sound. Server stuff still heavily in progress, so those working on JS stuff, stick to opening the html files with your browser rather than navigating there through the server.
 
+At some point we should probably look into setting up a virtual environment for flask development and maintaining a setup.py script, but this will do for now.
+
 ##Setup
     sudo apt-get install python-pip
-    pip install Flask
-    pip install Flask-OAuth
+    sudo pip install flask flask-oauth flask-security flask-mongoengine
 
 ##Usage
     python app.py
