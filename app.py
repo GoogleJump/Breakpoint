@@ -47,10 +47,10 @@ oauth = OAuth()
 FACEBOOK_APP_ID = 'tbd'
 FACEBOOK_APP_SECRET = 'tbd'
 
-"""
+'''
 https://pythonhosted.org/Flask-OAuth/
 OAuth remote app configuraations.
-"""
+'''
 facebook = oauth.remote_app('facebook',
     base_url='https://graph.facebook.com/',
     request_token_url=None,
@@ -70,9 +70,9 @@ twitter = oauth.remote_app('twitter',
 )
 
 # Create a fake user to start with.
-@app.before_first_request
-def create_user():
-    user_datastore.create_user(email='darylsew@gmail.com', password='password')
+#@app.before_first_request
+#def create_user():
+#    user_datastore.create_user(email='darylsew@gmail.com', password='password')
 
 # Views
 @app.route('/')
@@ -93,25 +93,33 @@ def audio():
 def map():
     return render_template('map.html')
 
-@app.route("/test")
+@app.route('/test')
 @login_required
 def test():
-    return render_template("test.html", worked="it worked!")
+    return render_template('test.html', worked='it worked!')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user_datastore.create_user(email=email, password=password)
+        return redirect(url_for('home'))
+    return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # TODO figure out everything
     if request.method == 'POST':
         session['username'] = request.form['username']
-        return redirect(url_for('index'))
-    return render_template("login.html")
+        return redirect(url_for('home'))
+    return render_template('login.html')
 
 @app.route('/logout')
 @login_required
 def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
-    return redirect(url_for('index'))
+    return redirect(url_for('home'))
 
 
 if __name__ == '__main__':
