@@ -6,14 +6,3 @@ this.render=function(c)
 {if(this.alpha==0)return;c.save();c.translate(this.posX,this.posY);c.scale(this.size,this.size);c.rotate(this.rotation*TO_RADIANS);c.translate(img.width*-0.5,img.width*-0.5);c.globalAlpha=this.alpha;c.globalCompositeOperation=this.compositeOperation;c.drawImage(img,0,0);c.restore();}}
 function randomRange(min,max)
 {return((Math.random()*(max-min))+ min);}
-
-
-
-
-
-
-Uncaught InvalidStateError: Failed to execute 'drawImage' on 'CanvasRenderingContext2D': 
-The HTMLImageElement provided is in the 'broken' state. ImageParticle.js:6
-1617
-Uncaught InvalidStateError: Failed to execute 'drawImage' on 'CanvasRenderingContext2D': T
-he HTMLImageElement provided is in the 'broken' state. 
