@@ -103,16 +103,15 @@ def login():
     # TODO figure out everything
     if request.method == 'POST':
         session['username'] = request.form['username']
-        flash('logged in!')
         return redirect(url_for('index'))
     return render_template("login.html")
-#
-#@app.route('/logout')
-#@login_required
-#def logout():
-#    # remove the username from the session if it's there
-#    session.pop('username', None)
-#    return redirect(url_for('index'))
+
+@app.route('/logout')
+@login_required
+def logout():
+    # remove the username from the session if it's there
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
