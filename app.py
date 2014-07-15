@@ -120,7 +120,10 @@ def alternateRegister():
         return redirect(url_for('home'))
     return render_template('register2.html')
 
-
+# dropdown demo
+@app.route('/dropdown')
+def dropdown():
+    return render_template('logout.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
