@@ -98,6 +98,10 @@ def map():
 def test():
     return render_template('test.html', worked='it worked!')
 
+@app.route('/test2')
+def test2():
+    return render_template('test2.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
