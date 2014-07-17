@@ -6,6 +6,7 @@ Heatmaps for sound. Server stuff still heavily in progress, so those working on 
 At some point we should probably look into setting up a virtual environment for flask development and maintaining a setup.py script, but this will do for now.
 
 ##Setup
+    git submodule update --init --recursive
     sudo apt-get install python-pip
     sudo pip install flask flask-oauth flask-security flask-mongoengine
 
