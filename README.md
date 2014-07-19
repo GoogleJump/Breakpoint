@@ -18,3 +18,5 @@ Storyboarding
 open app/webpage  
 modal dialog comes up: "login with facebook/github/etc" if you would like to upload a sound bite (so we can attach bites to users if they choose to not be anonymous)  
 on exit/login, the map with soundheatmapoverlay is visible  
+http://stackoverflow.com/questions/6037712/how-to-float-a-div-over-google-maps
+Also the maps are broken for a while. Working on it.
