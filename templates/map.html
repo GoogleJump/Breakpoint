@@ -61,11 +61,22 @@
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                                     <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
                                 </div>
+                                <span style="margin-left:8px;">or</span>  
                                 <div style="margin-top:10px" class="form-group">
                                     <!-- Button -->
 
                                     <div class="col-sm-12 controls">
                                         <a id="btn-login" href="#" class="btn btn-success">Login  </a>
+                                        <span id="signinButton">
+                                            <span
+                                                class="g-signin"
+                                                data-callback="signinCallback"
+                                                data-clientid="CLIENT_ID"
+                                                data-cookiepolicy="single_host_origin"
+                                                data-requestvisibleactions="http://schema.org/AddAction"
+                                                data-scope="https://www.googleapis.com/auth/plus.login">
+                                            </span>
+                                        </span>
                                         <!-- TODO
                                         <a id="btn-fblogin" href="#" class="btn btn-primary">Login with Facebook</a>
                                         -->
@@ -119,8 +130,7 @@
                                     <div class="col-md-offset-3 col-md-9">
                                         <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i>Sign Up</button>
                                         <!-- Facebook OAuth, if we get to that
-                                        <span style="margin-left:8px;">or</span>  
-                                        -->
+                                                                                -->
                                     </div>
                                 </div>
                                 <!-- Facebook OAuth, if we get to that
