@@ -111,15 +111,6 @@ def register():
         return redirect(url_for('home'))
     return render_template('register.html')
 
-@app.route('/alternateRegister', methods=['GET', 'POST'])
-def alternateRegister():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        user_datastore.create_user(email=email, password=password)
-        return redirect(url_for('home'))
-    return render_template('register2.html')
-
 # dropdown demo
 @app.route('/dropdown')
 def dropdown():
