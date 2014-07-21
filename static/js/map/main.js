@@ -17,6 +17,15 @@ function initialize() {
     var bounds = new google.maps.LatLngBounds(swBound, neBound);
 
     overlay = new canvasOverlay(bounds, map);
+
+    function resizeMap() {
+        $('#map-canvas').height($(window).height());
+        $('#map-canvas').width($(window).width());
+    }
+
+    resizeMap();
+
+    $(window).resize(resizeMap);
 }
 
 /** @constructor */
