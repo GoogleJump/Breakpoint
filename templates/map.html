@@ -12,7 +12,6 @@
             html { height: 100% }
             body { height: 100%; margin: 0; padding: 0 }
             #map-canvas { 100% }
-            /*
             #wrapper {
                 position: relative;
             }
@@ -22,7 +21,6 @@
                 left: 10px; 
                 z-index: 99;
             }
-            */
         </style>
         <!-- Place this asynchronous JavaScript just before your </body> tag -->
     <script type="text/javascript">
@@ -31,7 +29,8 @@
                 // Update the app to reflect a signed in user
                 // Hide the sign-in button now that the user is authorized, for example:
                 // TODO remove entire thingy
-                document.getElementById('signinButton').setAttribute('style', 'display: none');
+                //document.getElementById('signinButton').setAttribute('style', 'display: none');
+                $('#map-overlay').hide();
             } else {
                 // Update the app to reflect a signed out user
                 // Possible error values:
