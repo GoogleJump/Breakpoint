@@ -1,4 +1,3 @@
-from functools import wraps
 from flask import Flask, render_template, redirect, url_for, g, request, session
 from flask.ext.mongoengine import MongoEngine
 from flask.ext.security import Security, MongoEngineUserDatastore, \
