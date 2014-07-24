@@ -3,6 +3,7 @@ from flask.ext.mongoengine import MongoEngine
 from flask.ext.security import Security, MongoEngineUserDatastore, \
         UserMixin, RoleMixin, login_required
 from flask_oauth import OAuth
+from urllib2 import urlopen
                     
 # Create app
 app = Flask(__name__)
@@ -117,10 +118,19 @@ def dropdown():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # note: googleauth ezpz
+    # resp = urlopen(GET request with me
+    # resp[emails][value] or sth
     if request.method == 'POST':
         session['username'] = request.form['username']
-        return redirect(url_for('home'))
-    return render_template('login.html')
+        return redirect(url_for('map'))
+    else:
+        # TODO load from file
+        response = urlopen('https://www.googleapis.com/plus/v1/people/me?key=AIzaSyASx0hpPKM8ENDxXJXN_KwmqxiYkUtZte0')
+        print "responded!!"
+        return redirect(url_for('test'))
+
+    return render_template(url_for('map'))
 
 @app.route('/logout')
 @login_required

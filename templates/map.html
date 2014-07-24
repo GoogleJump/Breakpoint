@@ -28,9 +28,9 @@
             if (authResult['status']['signed_in']) {
                 // Update the app to reflect a signed in user
                 // Hide the sign-in button now that the user is authorized, for example:
-                // TODO remove entire thingy
                 //document.getElementById('signinButton').setAttribute('style', 'display: none');
                 $('#map-overlay').hide();
+                window.location.replace("http://stackoverflow.com");
             } else {
                 // Update the app to reflect a signed out user
                 // Possible error values:
@@ -41,13 +41,37 @@
             }
         }
 
-function googleOAuth() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/client:plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-}    
-googleOAuth();
-</script>
+        function googleOAuth() {
+            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+            po.src = 'https://apis.google.com/js/client:plusone.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        }    
+
+        function makeRequest(url) {
+            if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+                httpRequest = new XMLHttpRequest();
+            } else if (window.ActiveXObject) { // IE
+                try {
+                    httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+                } 
+                catch (e) {
+                    try {
+                        httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+                    } 
+                    catch (e) {}
+                }
+            }
+
+            if (!httpRequest) {
+                    alert('Giving up :( Cannot create an XMLHTTP instance');
+                    return false;
+                }
+                httpRequest.onreadystatechange = alertContents;
+                httpRequest.open('GET', url);
+                httpRequest.send();
+        }
+        googleOAuth();
+        </script>
 </head>
 <body>
     <div id="wrapper">
