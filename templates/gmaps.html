@@ -107,6 +107,7 @@ window.onload = function(){
 	console.log(heatmap.get("radius"))
 	//If you uncomment this, you will see that the radius is now 40. but it does not change the current heatmap...
 	
+	// this generates data points with random intensities (count) and places them randomly on the map
 	document.getElementById("gen").onclick = function(){
 		var x = 5;
 		while(x--){
@@ -133,7 +134,8 @@ window.onload = function(){
 	
 	// this is important, because if you set the data set too early, the latlng/pixel projection doesn't work
 	google.maps.event.addListenerOnce(map, "idle", function(){
-		heatmap.setDataSet(testData);
+		heatmap.setDataSet(testData)
+		heatmap.addDataPoint(47, 122, 35) // test lat, long, count variables
 	});
 
 };
