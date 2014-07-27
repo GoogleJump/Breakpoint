@@ -23,9 +23,7 @@
             }
         </style>
         <!-- Place this asynchronous JavaScript just before your </body> tag -->
-        <script type="text/javascript">
-            {{logged_in}}
-        </script>
+
         <script type="text/javascript" src="static/js/auth/auth.js"></script>
 </head> <body>
     <div id="wrapper">
@@ -34,7 +32,7 @@
             <div class="container">    
                 <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
                     <div class="panel panel-info" >
-                        <a class="close" style="position: relative;top:2px;right:5px;">&times;</a>
+                        <div id="closebtn" class="close" style="position: relative;top:2px;right:5px;">&times;</div>
                         <div class="panel-heading">
                             <div class="panel-title">Sign In</div>
                             <!-- TODO (really optional... hopefully we get oauth going..)
@@ -143,5 +141,15 @@
         type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwN_pF4DPweCGt22czffxS1Gi_doKJaKU"></script>
     <script src="static/js/map/main.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        {{logged_in}}
+        // The other auth option: if the user hits the x, then there are no upload options for them
+        $(document).ready(function() {
+            $('#closebtn').click(function() {
+                $('#map-overlay').hide();
+            });
+        });
+        
+    </script>
 </body>
 </html>

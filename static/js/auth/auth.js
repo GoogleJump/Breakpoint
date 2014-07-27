@@ -22,7 +22,7 @@ function signinCallback(authResult) {
                 if (json['success']) {
                     console.log('it worked!');
                 } else {
-                    // TODO how can oauth login fail again?
+                    // TODO how can oauth login fail? idt it can
                 }
             }
             makeRequest(ROOT_URL + 'userlogin?user=' + username, 'nope', success);
@@ -69,4 +69,5 @@ function makeRequest(url, auth, callback) {
     }
     httpRequest.send();
 }
+
 googleOAuth();
