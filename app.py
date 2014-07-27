@@ -4,6 +4,8 @@ from flask.ext.security import Security, MongoEngineUserDatastore, \
         UserMixin, RoleMixin, login_required
 from flask_oauth import OAuth
 from urllib2 import urlopen
+import json
+
                     
 # Create app
 app = Flask(__name__)
@@ -50,15 +52,15 @@ security = Security(app, user_datastore)
 # Views
 @app.route('/')
 def home():
-    return render_template('map.html')
+    return redirect(url_for('map'))
 
 @app.route('/recorder')
 def audio():
     return render_template('recorder.html')
 
 @app.route('/map')
-def map():
-    return render_template('map.html')
+def map(logged_in=False):
+    return render_template('map.html', logged_in=logged_in)
 
 @app.route('/upload')
 def upload():
@@ -85,9 +87,10 @@ def register():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        user_datastore.create_user(email=email, password=hash(password))
-        return redirect(url_for('home'))
-    return render_template('register.html')
+        user_datastore.create_user(email=email, password=str(hash(password)))
+        return redirect(url_for('map'))
+    # TODO figure out what to do here
+    return "404"
 
 # dropdown demo
 @app.route('/dropdown')
@@ -97,25 +100,26 @@ def dropdown():
 @app.route('/userlogin', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        f = open('errorLog', 'wb')
-        print >> f, "logged in"
         username = request.form['username']
         password = request.form['password']
         user = user_datastore.get_user(username)
-        print >> f, user
+        if str(hash(password)) == user.password:
+            session['username'] = username
+            return redirect(url_for('map'), logged_in=True)
+        else:
+            # TODO do something sensible
+            return "404 incorrect password"
         session['username'] = request.form['username']
         return redirect(url_for('map'))
     elif request.method == 'GET':
-        f = open('errorLog', 'wb')
-        print >> f, request.args.get('user')
         session['username'] = request.args.get('user')
         # when does it fail? idk
         return jsonify(success=True)
-        #we don't need a redirect, I think
-        #return redirect(url_for('map'))
+    else:
+        return "what are you doing stop pls"
     # if it's a GET request, it should include the email in it.
     # not confident we want to do it that way but i guess it works
-    return render_template(url_for('map'))
+    #return render_template(url_for('map'))
 
 @app.route('/logout')
 @login_required
