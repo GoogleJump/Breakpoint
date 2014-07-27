@@ -1,7 +1,8 @@
 // global variables are bad yeah
 var ROOT_URL = 'http://127.0.0.1:9999/'
+var username = "";
 function signinCallback(authResult) {
-    if (authResult['status']['signed_in'] || logged_in) {
+    if (authResult['status']['signed_in']) {
         // hide it right away because yeah
         $('#map-overlay').hide();
         // Update the app to reflect a signed in user
@@ -20,15 +21,21 @@ function signinCallback(authResult) {
                 // do login stuff
                 var json = JSON.parse(this.responseText);
                 if (json['success']) {
+                    // TODO successful oauth login stuff here
                     console.log('it worked!');
+                    console.log(username);
+                    //addUserOverlay(username);
                 } else {
-                    // TODO how can oauth login fail? idt it can
+                    // how can oauth login fail? idt it can
                 }
             }
             makeRequest(ROOT_URL + 'userlogin?user=' + username, 'nope', success);
         };
         var reqURL = 'https://www.googleapis.com/plus/v1/people/me?key=' + API_KEY;
         makeRequest(reqURL, token, receivedCallback);
+    } else if (logged_in) {
+        $('#map-overlay').hide();
+        // TODO successful nonoauth login stuff here
     } else { // Update the app to reflect a signed out user
         // Possible error values:
         //   'user_signed_out' - User is signed-out

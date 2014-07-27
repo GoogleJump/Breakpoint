@@ -143,8 +143,9 @@
     <script src="static/js/map/main.js" type="text/javascript"></script>
     <script type="text/javascript">
         {{logged_in}}
-        // The other auth option: if the user hits the x, then there are no upload options for them
+        {{username}}
         $(document).ready(function() {
+            // The other auth option: if the user hits the x, then there are no upload options for them
             $('#closebtn').click(function() {
                 $('#map-overlay').hide();
             });

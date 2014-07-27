@@ -55,7 +55,10 @@ def audio():
 def map():
     logged_in = 'username' in session
     if logged_in:
-        return render_template('map.html', logged_in='var logged_in = true;')
+        return render_template(
+                'map.html', 
+                logged_in='var logged_in = true;', 
+                username='var username = ' + session['username'])
     else:
         return render_template('map.html', logged_in='var logged_in = false;')
 
