@@ -7,6 +7,9 @@ from urllib2 import urlopen
 import json
 from jinja2 import Template
 
+# Note: To deal with potential username spoofing, check the username
+# in the session with every action that actually does something
+# ie creating a sound bite, deleting, etc
                     
 # Create app
 app = Flask(__name__)
@@ -72,14 +75,9 @@ def upload():
     #database.add(lat, lon, amp, freq)
     return render_template('map.html')
 
-@app.route('/test')
-@login_required
-def test():
-    return render_template('test.html', worked='it worked!')
-
-@app.route('/test2')
-def test2():
-    return render_template('test2.html')
+@app.route('/delete')
+def delete():
+    return "still working on this!"
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -91,11 +89,6 @@ def register():
     # TODO figure out what to do here.
     # also TODO what happens in user already exists case?
     return "404"
-
-# dropdown demo
-@app.route('/dropdown')
-def dropdown():
-    return render_template('logout.html')
 
 @app.route('/userlogin', methods=['GET', 'POST'])
 def login():
