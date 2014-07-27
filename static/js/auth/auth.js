@@ -1,9 +1,10 @@
+// global variables are bad yeah
+var ROOT_URL = 'http://127.0.0.1:9999/'
 function signinCallback(authResult) {
     if (authResult['status']['signed_in']) {
         // Update the app to reflect a signed in user
         // Hide the sign-in button now that the user is authorized, for example:
         //document.getElementById('signinButton').setAttribute('style', 'display: none');
-        $('#map-overlay').hide();
         //in case we need to do a javascript redirect
         //window.location.replace('http://stackoverflow.com');
 
@@ -13,7 +14,17 @@ function signinCallback(authResult) {
         var receivedCallback = function() {
             var userInfo = JSON.parse(this.responseText);
             username = userInfo.emails[0].value;
-            console.log('username retrieved: ' + username);
+            var success = function() {
+                // do login stuff
+                var json = JSON.parse(this.responseText);
+                if (json['success']) {
+                    console.log('it worked!');
+                    $('#map-overlay').hide();
+                } else {
+                    // TODO how can oauth login fail again?
+                }
+            }
+            makeRequest(ROOT_URL + 'userlogin?user=' + username, 'nope', success);
         };
         var reqURL = 'https://www.googleapis.com/plus/v1/people/me?key=' + API_KEY;
         makeRequest(reqURL, token, receivedCallback);
@@ -46,30 +57,15 @@ function makeRequest(url, auth, callback) {
             catch (e) {}
         }
     }
-
     if (!httpRequest) {
         alert('Giving up :( Cannot create an XMLHTTP instance');
         return false;
     }
-    //httpRequest.onreadystatechange = alertContents;
     httpRequest.open('GET', url);
     httpRequest.onload = callback;
-    if (typeof auth != 'undefined') {
+    if (typeof auth != 'undefined' && auth != 'nope') {
         httpRequest.setRequestHeader("Authorization", auth);
-        httpRequest.send();
-        //console.log(httpRequest);
-        //console.log(httpRequest.response);
-        //var jsonResponse = $.parseJSON(httpRequest.responseText);
-        ////var jsonResponse = JSON.parse(httpRequest.responseText);
-        //var email = jsonResponse;
-        //console.log(email);
-        //return email;
-    } else {
-        httpRequest.send();
-        httpRequest.onload = function() {
-            return httpRequest.responseText;
-        };
-        //return httpRequest.responseText;
     }
+    httpRequest.send();
 }
 googleOAuth();

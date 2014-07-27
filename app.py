@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, g, request, session
+from flask import Flask, render_template, redirect, url_for, g, request, session, jsonify
 from flask.ext.mongoengine import MongoEngine
 from flask.ext.security import Security, MongoEngineUserDatastore, \
         UserMixin, RoleMixin, login_required
@@ -94,14 +94,19 @@ def register():
 def dropdown():
     return render_template('logout.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/userlogin', methods=['GET', 'POST'])
 def login():
-    # note: googleauth ezpz
-    # resp = urlopen(GET request with me
-    # resp[emails][value] or sth
     if request.method == 'POST':
         session['username'] = request.form['username']
         return redirect(url_for('map'))
+    elif request.method == 'GET':
+        f = open('errorLog', 'wb')
+        print >> f, request.args.get('user')
+        session['username'] = request.args.get('user')
+        # when does it fail? idk
+        return jsonify(success=True)
+        #we don't need a redirect, I think
+        #return redirect(url_for('map'))
     # if it's a GET request, it should include the email in it.
     # not confident we want to do it that way but i guess it works
     return render_template(url_for('map'))
