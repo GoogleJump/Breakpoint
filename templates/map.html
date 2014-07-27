@@ -142,8 +142,8 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwN_pF4DPweCGt22czffxS1Gi_doKJaKU"></script>
     <script src="static/js/map/main.js" type="text/javascript"></script>
     <script type="text/javascript">
-        {{logged_in}}
-        {{username}}
+        {{logged_in|safe}}
+        {{username|safe}}
         $(document).ready(function() {
             // The other auth option: if the user hits the x, then there are no upload options for them
             $('#closebtn').click(function() {

@@ -22,8 +22,8 @@ function signinCallback(authResult) {
                 var json = JSON.parse(this.responseText);
                 if (json['success']) {
                     // TODO successful oauth login stuff here
-                    console.log('it worked!');
-                    console.log(username);
+                    //console.log('it worked!');
+                    //console.log(username);
                     //addUserOverlay(username);
                 } else {
                     // how can oauth login fail? idt it can
