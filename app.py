@@ -5,6 +5,7 @@ from flask.ext.security import Security, MongoEngineUserDatastore, \
 from flask_oauth import OAuth
 from urllib2 import urlopen
 import json
+from jinja2 import Template
 
                     
 # Create app
@@ -14,9 +15,6 @@ app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'replace_me_eventually'
 
 # MongoDB config
-#app.config['MONGODB_DB'] = 'mydatabase'
-#app.config['MONGODB_HOST'] = 'localhost'
-#app.config['MONGODB_PORT'] = 27017
 # TODO load from file
 app.config['MONGODB_SETTINGS'] = {
                                     'DB': 'mangoes', 
@@ -44,11 +42,6 @@ class User(db.Document, UserMixin):
 user_datastore = MongoEngineUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
-# Create a fake user to start with.
-#@app.before_first_request
-#def create_user():
-#    user_datastore.create_user(email='darylsew@gmail.com', password='password')
-
 # Views
 @app.route('/')
 def home():
@@ -59,8 +52,12 @@ def audio():
     return render_template('recorder.html')
 
 @app.route('/map')
-def map(logged_in=False):
-    return render_template('map.html', logged_in=logged_in)
+def map():
+    logged_in = 'username' in session
+    if logged_in:
+        return render_template('map.html', logged_in='var logged_in = true;')
+    else:
+        return render_template('map.html', logged_in='var logged_in = false;')
 
 @app.route('/upload')
 def upload():
@@ -70,8 +67,7 @@ def upload():
     #amp = param['amp']
     #freq = param['freq']
     #database.add(lat, lon, amp, freq)
-    return render_template('map.html', success=True)
-
+    return render_template('map.html')
 
 @app.route('/test')
 @login_required
@@ -89,7 +85,8 @@ def register():
         password = request.form['password']
         user_datastore.create_user(email=email, password=str(hash(password)))
         return redirect(url_for('map'))
-    # TODO figure out what to do here
+    # TODO figure out what to do here.
+    # also TODO what happens in user already exists case?
     return "404"
 
 # dropdown demo
@@ -105,7 +102,7 @@ def login():
         user = user_datastore.get_user(username)
         if str(hash(password)) == user.password:
             session['username'] = username
-            return redirect(url_for('map'), logged_in=True)
+            return redirect(url_for('map'))
         else:
             # TODO do something sensible
             return "404 incorrect password"
@@ -126,7 +123,7 @@ def login():
 def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
-    return redirect(url_for('home'))
+    return redirect(url_for('map'))
 
 
 if __name__ == '__main__':
