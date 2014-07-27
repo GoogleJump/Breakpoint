@@ -5,6 +5,7 @@ from flask.ext.security import Security, MongoEngineUserDatastore, \
 from flask_oauth import OAuth
 from urllib2 import urlopen
 import json
+from jinja2 import Template
 
                     
 # Create app
@@ -52,7 +53,11 @@ def audio():
 
 @app.route('/map')
 def map():
-    return render_template('map.html')
+    logged_in = 'username' in session
+    if logged_in:
+        return render_template('map.html', logged_in='var logged_in = true;')
+    else:
+        return render_template('map.html', logged_in='var logged_in = false;')
 
 @app.route('/upload')
 def upload():
@@ -80,7 +85,8 @@ def register():
         password = request.form['password']
         user_datastore.create_user(email=email, password=str(hash(password)))
         return redirect(url_for('map'))
-    # TODO figure out what to do here
+    # TODO figure out what to do here.
+    # also TODO what happens in user already exists case?
     return "404"
 
 # dropdown demo
@@ -96,7 +102,7 @@ def login():
         user = user_datastore.get_user(username)
         if str(hash(password)) == user.password:
             session['username'] = username
-            return redirect(url_for('map', logged_in=True))
+            return redirect(url_for('map'))
         else:
             # TODO do something sensible
             return "404 incorrect password"
@@ -117,10 +123,7 @@ def login():
 def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
-    logged_in = request.args['logged_in'];
-    f = open('errorLog', 'wb')
-    print >> f, logged_in
-    return redirect(url_for('map'), logged_in=logged_in)
+    return redirect(url_for('map'))
 
 
 if __name__ == '__main__':

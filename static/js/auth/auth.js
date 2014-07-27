@@ -1,7 +1,7 @@
 // global variables are bad yeah
 var ROOT_URL = 'http://127.0.0.1:9999/'
 function signinCallback(authResult) {
-    if (authResult['status']['signed_in'] || {{logged_in}}) {
+    if (authResult['status']['signed_in'] || logged_in) {
         // hide it right away because yeah
         $('#map-overlay').hide();
         // Update the app to reflect a signed in user

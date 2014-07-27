@@ -23,7 +23,10 @@
             }
         </style>
         <!-- Place this asynchronous JavaScript just before your </body> tag -->
-    <script type="text/javascript" src="static/js/auth/auth.js"></script>
+        <script type="text/javascript">
+            {{logged_in}}
+        </script>
+        <script type="text/javascript" src="static/js/auth/auth.js"></script>
 </head> <body>
     <div id="wrapper">
         <div id="map-canvas"></div>
