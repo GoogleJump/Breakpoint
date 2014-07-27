@@ -2,6 +2,8 @@
 var ROOT_URL = 'http://127.0.0.1:9999/'
 function signinCallback(authResult) {
     if (authResult['status']['signed_in']) {
+        // hide it right away because yeah
+        $('#map-overlay').hide();
         // Update the app to reflect a signed in user
         // Hide the sign-in button now that the user is authorized, for example:
         //document.getElementById('signinButton').setAttribute('style', 'display: none');
@@ -19,7 +21,6 @@ function signinCallback(authResult) {
                 var json = JSON.parse(this.responseText);
                 if (json['success']) {
                     console.log('it worked!');
-                    $('#map-overlay').hide();
                 } else {
                     // TODO how can oauth login fail again?
                 }
