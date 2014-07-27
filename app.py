@@ -102,12 +102,8 @@ def login():
     if request.method == 'POST':
         session['username'] = request.form['username']
         return redirect(url_for('map'))
-    else:
-        # TODO load from file
-        response = urlopen('https://www.googleapis.com/plus/v1/people/me?key=AIzaSyASx0hpPKM8ENDxXJXN_KwmqxiYkUtZte0')
-        print "responded!!"
-        return redirect(url_for('test'))
-
+    # if it's a GET request, it should include the email in it.
+    # not confident we want to do it that way but i guess it works
     return render_template(url_for('map'))
 
 @app.route('/logout')

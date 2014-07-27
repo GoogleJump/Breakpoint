@@ -1,15 +1,16 @@
 function signinCallback(authResult) {
     if (authResult['status']['signed_in']) {
-        console.log('authresult:');
-        console.log(authResult);
         // Update the app to reflect a signed in user
         // Hide the sign-in button now that the user is authorized, for example:
         //document.getElementById('signinButton').setAttribute('style', 'display: none');
         $('#map-overlay').hide();
+        //in case we need to do a javascript redirect
         //window.location.replace('http://stackoverflow.com');
+
         // note - it doesn't matter that people can see this API key
-        API_KEY = 'AIzaSyASx0hpPKM8ENDxXJXN_KwmqxiYkUtZte0';
-        var username = makeRequest('https://www.googleapis.com/plus/v1/people/me?key=' + API_KEY);
+        var API_KEY = 'AIzaSyBMtQNnKdssKEIXsXBunXbwsDr7rnjrVh4';
+        var token = "Bearer " + authResult['access_token'];
+        var username = makeRequest('https://www.googleapis.com/plus/v1/people/me?key=' + API_KEY, token);
         console.log('username retrieved: ' + username);
     } else { // Update the app to reflect a signed out user
         // Possible error values:
@@ -45,13 +46,21 @@ function makeRequest(url, auth) {
         alert('Giving up :( Cannot create an XMLHTTP instance');
         return false;
     }
-    httpRequest.onreadystatechange = alertContents;
+    //httpRequest.onreadystatechange = alertContents;
     httpRequest.open('GET', url);
     if (typeof auth != 'undefined') {
-        httpRequest.setRequestHeader(auth);
+        httpRequest.setRequestHeader("Authorization", auth);
+        httpRequest.send();
+        console.log(httpRequest);
+        console.log(httpRequest.response);
+        var jsonResponse = $.parseJSON(httpRequest.responseText);
+        //var jsonResponse = JSON.parse(httpRequest.responseText);
+        var email = jsonResponse;
+        console.log(email);
+        return email;
+    } else {
+        httpRequest.send();
+        return httpRequest.responseText;
     }
-
-    httpRequest.send();
-    return httpRequest.responseText;
 }
 googleOAuth();
