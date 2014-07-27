@@ -1,23 +1,58 @@
 /* Style me! */
-body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  text-align: left;
+html { 
+    height: 100% 
+}
+
+body { 
+    height: 100%; 
+    margin: 0; 
+    padding: 0 
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-align: left;
+}
+
+#map-canvas { 100% }
+
+#wrapper {
+    position: relative;
+}
+
+#map-overlay {
+    position: absolute; 
+    top: 10px; 
+    left: 10px; 
+    z-index: 99;
 }
 
 .close {
-  font-size: 25px;
-  font-weight: bold;
-  line-height: 18px;
-  color: #000000;
-  text-shadow: 0 1px 0 #ffffff;
-  opacity: 0.2;
-  filter: alpha(opacity=20);
-  text-decoration: none;
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 18px;
+    color: #000000;
+    text-shadow: 0 1px 0 #ffffff;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+    text-decoration: none;
 }
+
 .close:hover {
-  color: #000000;
-  text-decoration: none;
-  opacity: 0.4;
-  filter: alpha(opacity=40);
-  cursor: pointer;
+    color: #000000;
+    text-decoration: none;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    cursor: pointer;
+}
+
+.loginbox {
+    margin-top:50px;
+}
+
+.closebtn {
+    position: relative;
+    top: 2px;
+    right: 5px;
+}
+
+.panel-body {
+    padding-top: 30px;
 }
