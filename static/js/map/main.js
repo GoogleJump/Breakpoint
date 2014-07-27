@@ -5,7 +5,12 @@ function initialize() {
 
     var mapOptions = {
         center: new google.maps.LatLng(-34.397, 150.644),
-        zoom: 8
+        zoom: 8,
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+            position: google.maps.ControlPosition.TOP_CENTER
+        },
     };
 
     var map = new google.maps.Map(
