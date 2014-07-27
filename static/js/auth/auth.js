@@ -11,8 +11,8 @@ function signinCallback(authResult) {
         var API_KEY = 'AIzaSyBMtQNnKdssKEIXsXBunXbwsDr7rnjrVh4';
         var token = 'Bearer ' + authResult['access_token'];
         var receivedCallback = function() {
-            var json = JSON.parse(this.responseText);
-            console.log('json: ' + json);
+            var userInfo = JSON.parse(this.responseText);
+            username = userInfo.emails[0].value;
             console.log('username retrieved: ' + username);
         };
         var reqURL = 'https://www.googleapis.com/plus/v1/people/me?key=' + API_KEY;
