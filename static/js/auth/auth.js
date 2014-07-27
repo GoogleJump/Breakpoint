@@ -9,9 +9,14 @@ function signinCallback(authResult) {
 
         // note - it doesn't matter that people can see this API key
         var API_KEY = 'AIzaSyBMtQNnKdssKEIXsXBunXbwsDr7rnjrVh4';
-        var token = "Bearer " + authResult['access_token'];
-        var username = makeRequest('https://www.googleapis.com/plus/v1/people/me?key=' + API_KEY, token);
-        console.log('username retrieved: ' + username);
+        var token = 'Bearer ' + authResult['access_token'];
+        var receivedCallback = function() {
+            var json = JSON.parse(this.responseText);
+            console.log('json: ' + json);
+            console.log('username retrieved: ' + username);
+        };
+        var reqURL = 'https://www.googleapis.com/plus/v1/people/me?key=' + API_KEY;
+        makeRequest(reqURL, token, receivedCallback);
     } else { // Update the app to reflect a signed out user
         // Possible error values:
         //   'user_signed_out' - User is signed-out
@@ -27,7 +32,7 @@ function googleOAuth() {
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
 }    
 
-function makeRequest(url, auth) {
+function makeRequest(url, auth, callback) {
     if (window.XMLHttpRequest) { // Mozilla, Safari, ...
         httpRequest = new XMLHttpRequest();
     } else if (window.ActiveXObject) { // IE
@@ -48,19 +53,23 @@ function makeRequest(url, auth) {
     }
     //httpRequest.onreadystatechange = alertContents;
     httpRequest.open('GET', url);
+    httpRequest.onload = callback;
     if (typeof auth != 'undefined') {
         httpRequest.setRequestHeader("Authorization", auth);
         httpRequest.send();
-        console.log(httpRequest);
-        console.log(httpRequest.response);
-        var jsonResponse = $.parseJSON(httpRequest.responseText);
-        //var jsonResponse = JSON.parse(httpRequest.responseText);
-        var email = jsonResponse;
-        console.log(email);
-        return email;
+        //console.log(httpRequest);
+        //console.log(httpRequest.response);
+        //var jsonResponse = $.parseJSON(httpRequest.responseText);
+        ////var jsonResponse = JSON.parse(httpRequest.responseText);
+        //var email = jsonResponse;
+        //console.log(email);
+        //return email;
     } else {
         httpRequest.send();
-        return httpRequest.responseText;
+        httpRequest.onload = function() {
+            return httpRequest.responseText;
+        };
+        //return httpRequest.responseText;
     }
 }
 googleOAuth();
