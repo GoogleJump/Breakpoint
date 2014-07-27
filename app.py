@@ -42,33 +42,6 @@ class User(db.Document, UserMixin):
 user_datastore = MongoEngineUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
-# OAuth stuff still under construction.
-oauth = OAuth()
-FACEBOOK_APP_ID = 'tbd'
-FACEBOOK_APP_SECRET = 'tbd'
-
-'''
-https://pythonhosted.org/Flask-OAuth/
-OAuth remote app configuraations.
-'''
-facebook = oauth.remote_app('facebook',
-    base_url='https://graph.facebook.com/',
-    request_token_url=None,
-    access_token_url='/oauth/access_token',
-    authorize_url='https://www.facebook.com/dialog/oauth',
-    consumer_key=FACEBOOK_APP_ID,
-    consumer_secret=FACEBOOK_APP_SECRET,
-    request_token_params={'scope': 'email'}
-    )
-twitter = oauth.remote_app('twitter',
-    base_url='https://api.twitter.com/1/',
-    request_token_url='https://api.twitter.com/oauth/request_token',
-    access_token_url='https://api.twitter.com/oauth/access_token',
-    authorize_url='https://api.twitter.com/oauth/authenticate',
-    consumer_key='<your key here>',
-    consumer_secret='<your secret here>'
-)
-
 # Create a fake user to start with.
 #@app.before_first_request
 #def create_user():
@@ -77,13 +50,7 @@ twitter = oauth.remote_app('twitter',
 # Views
 @app.route('/')
 def home():
-    #params = request.getParams()
-    #lat = param['lat']
-    #lon = param['lon']
-    #amp = param['amp']
-    #freq = param['freq']
-    #database.add(lat, lon, amp, freq)
-    return render_template('index.html')
+    return render_template('map.html')
 
 @app.route('/recorder')
 def audio():
@@ -92,6 +59,17 @@ def audio():
 @app.route('/map')
 def map():
     return render_template('map.html')
+
+@app.route('/upload')
+def upload():
+    #params = request.getParams()
+    #lat = param['lat']
+    #lon = param['lon']
+    #amp = param['amp']
+    #freq = param['freq']
+    #database.add(lat, lon, amp, freq)
+    return render_template('map.html', success=True)
+
 
 @app.route('/test')
 @login_required
