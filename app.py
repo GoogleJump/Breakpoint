@@ -85,7 +85,7 @@ def register():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        user_datastore.create_user(email=email, password=password)
+        user_datastore.create_user(email=email, password=hash(password))
         return redirect(url_for('home'))
     return render_template('register.html')
 
@@ -97,6 +97,12 @@ def dropdown():
 @app.route('/userlogin', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        f = open('errorLog', 'wb')
+        print >> f, "logged in"
+        username = request.form['username']
+        password = request.form['password']
+        user = user_datastore.get_user(username)
+        print >> f, user
         session['username'] = request.form['username']
         return redirect(url_for('map'))
     elif request.method == 'GET':
