@@ -61,7 +61,7 @@ def map():
         return render_template(
                 'map.html', 
                 logged_in='var logged_in = true;', 
-                username='var username = ' + session['username'])
+                username='var username = "' + session['username'] + '"')
     else:
         return render_template('map.html', logged_in='var logged_in = false;')
 
