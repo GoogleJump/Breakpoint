@@ -38,10 +38,20 @@ class User(db.Document, UserMixin):
     email = db.StringField(max_length=255)
     password = db.StringField(max_length=255)
     active = db.BooleanField(default=True)
-    confirmed_at =db.DateTimeField()
+    confirmed_at = db.DateTimeField()
     roles = db.ListField(db.ReferenceField(Role), default=[])
 
-# Setup FLask-Security
+class Bite(db.Document):
+    centroids = db.ListField(db.FloatField(), default=list)
+    volumes = db.ListField(db.FloatField(), default=list)
+    location = db.GeoPointField()
+    start_time = db.DateTimeField()
+    duration = db.IntField()
+
+#testBite = Bite(centroids=[1, 2], volumes=[1, 2], duration=0)
+#testBite.save()
+
+# Setup Flask-Security
 user_datastore = MongoEngineUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
