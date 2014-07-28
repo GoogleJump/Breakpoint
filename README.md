@@ -1,9 +1,7 @@
 Breakpoint
 ==========
 
-Heatmaps for sound. Server stuff still heavily in progress, so those working on JS stuff, stick to opening the html files with your browser rather than navigating there through the server.
-
-At some point we should probably look into setting up a virtual environment for flask development and maintaining a setup.py script, but this will do for now.
+Heatmaps for sound. At some point we should probably look into setting up a virtual environment for flask development and maintaining a setup.py script, but this will do for now.
 
 ##Setup
     git submodule update --init --recursive
@@ -12,6 +10,8 @@ At some point we should probably look into setting up a virtual environment for 
 
 ##Usage
     python app.py
+
+Once we're running production databases/etc the credentials will not be hardcoded and versioned... but for now the worst that can happen is someone maxes out a free mongohq instance/free tier for google APIs so it's logistically easier to keep it this way.
 
 Storyboarding
 -------------
