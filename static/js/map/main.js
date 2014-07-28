@@ -11,6 +11,7 @@ function initialize() {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
             position: google.maps.ControlPosition.TOP_LEFT
         },
+        streetViewControl: false,
     };
 
     var map = new google.maps.Map(
