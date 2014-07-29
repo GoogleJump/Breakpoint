@@ -24,7 +24,7 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-                <li id='upload' role="presentation"><a role="menuitem" tabindex="-1" href="/upload">Upload</a></li>
+                <li id='upload' role="presentation"><a role="menuitem" tabindex="-1">Upload</a></li>
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="/delete">Delete</a></li>
             </ul>
         </div>
@@ -151,6 +151,7 @@
             // TODO add stop functionality to stop button click
             $('#upload').click(function() {
                 // TODO start uploading here
+                // make request to server
                 $('stop').show();
             });
         });
