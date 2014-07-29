@@ -24,11 +24,11 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="/upload">Upload</a></li>
+                <li id='upload' role="presentation"><a role="menuitem" tabindex="-1" href="/upload">Upload</a></li>
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="/delete">Delete</a></li>
             </ul>
         </div>
-        <button id="stop" style='position:fixed;font-size:40px;top:50%;right:50%;margin-top:-28px;margin-left:-41px' class="btn btn-warning">Stop</button>
+        <button id="stop" style='position:fixed;font-size:40px;top:50%;right:50%;margin-top:-28px;margin-left:-41px;display:none;' class="btn btn-warning">Stop</button>
         <div id="map-overlay">
             <div class="container">    
                 <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
@@ -147,6 +147,11 @@
             // The other auth option: if the user hits the x, then there are no upload options for them
             $('#closebtn').click(function() {
                 $('#map-overlay').hide();
+            });
+            // TODO add stop functionality to stop button click
+            $('#upload').click(function() {
+                // TODO start uploading here
+                $('stop').show();
             });
         });
         
