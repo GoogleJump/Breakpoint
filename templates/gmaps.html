@@ -134,8 +134,9 @@ window.onload = function(){
 	
 	// this is important, because if you set the data set too early, the latlng/pixel projection doesn't work
 	google.maps.event.addListenerOnce(map, "idle", function(){
-		heatmap.setDataSet(testData)
-		heatmap.addDataPoint(47, 122, 35) // test lat, long, count variables
+		//heatmap.setDataSet(testData);
+        heatmap.addDataPoint(33.5363,-117.044, 5,40,50);
+        heatmap.addDataPoint(33.5363,-80.044, 5,10,180);    
 	});
 
 };
