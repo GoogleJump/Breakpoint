@@ -163,7 +163,8 @@
 
             $('#stop').click(function() {
                 console.log("stopping recording...")
-                stop();
+                toggleRecording($('#stop'));
+                $('#stop').hide();
             });
         });
     </script>

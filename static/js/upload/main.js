@@ -53,31 +53,13 @@ function doneEncoding( blob ) {
     recIndex++;
 }
 
-// TODO verify
-function start() {
-    if (!audioRecorder || started)
-        return;
-    started = true;
-    audioRecorder.clear();
-    audioRecorder.record();
-}
-
-// TODO verify
-function stop() {
-    if (!started)
-        return;
-    audioRecorder.stop();
-    started = false;
-    audioRecorder.getBuffers( gotBuffers );
-}
-
-
 function toggleRecording( e ) {
     if (e.classList.contains("recording")) {
         // stop recording
         audioRecorder.stop();
         e.classList.remove("recording");
         audioRecorder.getBuffers( gotBuffers );
+        console.log("Stopped recording.");
     } else {
         // start recording
         if (!audioRecorder)
@@ -85,6 +67,7 @@ function toggleRecording( e ) {
         e.classList.add("recording");
         audioRecorder.clear();
         audioRecorder.record();
+        console.log("Started recording.");
     }
 }
 
