@@ -24,6 +24,7 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                <!-- TODO make these only show up if you're logged in -->
                 <li id='upload' role="presentation"><a role="menuitem" tabindex="-1">Upload</a></li>
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="/delete">Delete</a></li>
             </ul>
@@ -149,13 +150,14 @@
                 $('#map-overlay').hide();
             });
             // TODO add stop functionality to stop button click
+
             $('#upload').click(function() {
-                // TODO start uploading here
-                // make request to server
-                $('stop').show();
+                $('#stop').show();
+                // triggers location get and recording start
+                console.log("invading privacy...");
+                invadePrivacy();
             });
         });
-        
     </script>
 </body>
 </html>

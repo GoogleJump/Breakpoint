@@ -1,29 +1,7 @@
-function success(position) {
-    var latitude  = position.coords.latitude;
-    var longitude = position.coords.longitude;
-    var accuracy = position.coords.accuracy;
-    console.log('Your current position is:');
-    console.log('Latitude : ' + latitude);
-    console.log('Longitude: ' + longitude);
-    console.log('Accurate to ' + accuracy + ' meters.');
-}
-
-var options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0
-}
-
-var error = function(err) {
-    console.log('ERROR(' + err.code + '): ' + err.message);
-};
-
-function getLocation() {
-    navigator.geolocation.getCurrentPosition(success, error, options);
-}
-
-function startRecording() {
-    // get location, 
+function startRecording(lat, lng) {
+    // triggered on location callback results
+    console.log("received lat " + lat + ", long " + lng);
+    console.log("recording");
     // toggleRecording(e) where e is (or at least, was) an image
     //<div id="controls">
     //<img id="record" src="img/mic128.png" onclick="toggleRecording(this);">
@@ -45,4 +23,29 @@ function centroids(data, granularity) {
 function volumes(data, granularity) {
     // granularity == tradeoff between quality and data size
     // if upload sizes are an issue we'll go for lower quality
+}
+
+var success = function(position) {
+    var latitude  = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    var accuracy = position.coords.accuracy;
+    //console.log('Your current position is:');
+    //console.log('Latitude : ' + latitude);
+    //console.log('Longitude: ' + longitude);
+    //console.log('Accurate to ' + accuracy + ' meters.');
+    startRecording(latitude, longitude);
+}
+
+var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+}
+
+var error = function(err) {
+    console.log('ERROR(' + err.code + '): ' + err.message);
+};
+
+function invadePrivacy() {
+    navigator.geolocation.getCurrentPosition(success, error, options);
 }
