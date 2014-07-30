@@ -12,9 +12,12 @@
             
         </style>
         <!-- Place this asynchronous JavaScript just before your </body> tag -->
-
+        <!-- meh Require.js should be happening somewhere -->
         <script type="text/javascript" src="static/js/auth/auth.js"></script>
         <script type="text/javascript" src="static/js/upload/upload.js"></script>
+        <script src="../static/js/upload/audiodisplay.js"></script>
+	<script src="../static/js/upload/recorder.js"></script>
+	<script src="../static/js/upload/main.js"></script>
 </head> <body>
     <div id="wrapper">
         <div id="map-canvas"></div>
@@ -156,6 +159,11 @@
                 // triggers location get and recording start
                 console.log("invading privacy...");
                 invadePrivacy();
+            });
+
+            $('#stop').click(function() {
+                console.log("stopping recording...")
+                toggleRecording(e);
             });
         });
     </script>
