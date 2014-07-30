@@ -83,7 +83,9 @@ def upload():
     #amp = param['amp']
     #freq = param['freq']
     #database.add(lat, lon, amp, freq)
-    return render_template('map.html')
+    #return render_template('map.html')
+    # TODO parse request params, store in database
+    return jsonify(placeholder=True)
 
 @app.route('/delete')
 def delete():

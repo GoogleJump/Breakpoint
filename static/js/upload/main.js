@@ -53,18 +53,25 @@ function doneEncoding( blob ) {
     recIndex++;
 }
 
-function toggleRecording( e ) {
-    if (e.classList.contains("recording")) {
-        // stop recording
+function toggleRecording() {
+    //if (e.classList.contains("recording")) {
+    if (started) {
+        // stop recording (this is where we upload all the things!)
         audioRecorder.stop();
-        e.classList.remove("recording");
+        //e.classList.remove("recording");
+        started = false;
         audioRecorder.getBuffers( gotBuffers );
         console.log("Stopped recording.");
+        var callback = function() {
+            console.log(JSON.parse(this.responseText));
+        }
+        makeRequest(ROOT_URL + "/upload", 'nope', callback);
     } else {
         // start recording
         if (!audioRecorder)
             return;
-        e.classList.add("recording");
+        //e.classList.add("recording");
+        started = true;
         audioRecorder.clear();
         audioRecorder.record();
         console.log("Started recording.");
@@ -148,9 +155,10 @@ function gotStream(stream) {
 
 //    audioInput = convertToMono( input );
 
-    analyserNode = audioContext.createAnalyser();
-    analyserNode.fftSize = 2048;
-    inputPoint.connect( analyserNode );
+    // TODO needed for belowmentioned visual feedback
+    //analyserNode = audioContext.createAnalyser();
+    //analyserNode.fftSize = 2048;
+    //inputPoint.connect( analyserNode );
 
     audioRecorder = new Recorder( inputPoint );
 

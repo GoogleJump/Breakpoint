@@ -152,8 +152,6 @@
             $('#closebtn').click(function() {
                 $('#map-overlay').hide();
             });
-            // TODO add stop functionality to stop button click
-
             $('#upload').click(function() {
                 $('#stop').show();
                 // triggers location get and recording start
@@ -163,7 +161,7 @@
 
             $('#stop').click(function() {
                 console.log("stopping recording...")
-                toggleRecording($('#stop'));
+                toggleRecording();
                 $('#stop').hide();
             });
         });
