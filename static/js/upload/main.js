@@ -155,10 +155,13 @@ function gotStream(stream) {
 
 //    audioInput = convertToMono( input );
 
-    // TODO needed for belowmentioned visual feedback
-    //analyserNode = audioContext.createAnalyser();
-    //analyserNode.fftSize = 2048;
-    //inputPoint.connect( analyserNode );
+    analyserNode = audioContext.createAnalyser();
+    analyserNode.fftSize = 2048;
+    inputPoint.connect( analyserNode );
+    // core of the analysis:
+    // var freqByteData = new UintBArray(analyserNode.frequencyBinCount);
+    // repeated step -
+    // analyserNode.getByteFrequencyData(freqByteData);
 
     audioRecorder = new Recorder( inputPoint );
 
