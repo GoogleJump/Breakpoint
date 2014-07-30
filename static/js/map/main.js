@@ -4,7 +4,7 @@ canvasOverlay.prototype = new google.maps.OverlayView();
 function initialize() {
 
     var mapOptions = {
-        center: new google.maps.LatLng(-34.397, 150.644),
+        center: new google.maps.LatLng(37.389444, -122.081944),
         zoom: 8,
         mapTypeControl: true,
         mapTypeControlOptions: {
