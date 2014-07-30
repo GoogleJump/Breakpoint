@@ -2,7 +2,7 @@ function startRecording(lat, lng) {
     // triggered on location callback results
     console.log("received lat " + lat + ", long " + lng);
     initAudio();
-    toggleRecording(this);
+    start();
     console.log("recording");
     // toggleRecording(e) where e is (or at least, was) an image
     //<div id="controls">

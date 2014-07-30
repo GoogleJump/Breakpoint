@@ -24,6 +24,7 @@ var rafID = null;
 var analyserContext = null;
 var canvasWidth, canvasHeight;
 var recIndex = 0;
+var started = false;
 
 /* TODO:
 
@@ -51,6 +52,25 @@ function doneEncoding( blob ) {
     Recorder.setupDownload( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
     recIndex++;
 }
+
+// TODO verify
+function start() {
+    if (!audioRecorder || started)
+        return;
+    started = true;
+    audioRecorder.clear();
+    audioRecorder.record();
+}
+
+// TODO verify
+function stop() {
+    if (!started)
+        return;
+    audioRecorder.stop();
+    started = false;
+    audioRecorder.getBuffers( gotBuffers );
+}
+
 
 function toggleRecording( e ) {
     if (e.classList.contains("recording")) {
@@ -155,7 +175,8 @@ function gotStream(stream) {
     zeroGain.gain.value = 0.0;
     inputPoint.connect( zeroGain );
     zeroGain.connect( audioContext.destination );
-    updateAnalysers();
+    // TODO visual feedback for recording can be done if we use the analysers
+    //updateAnalysers();
 }
 
 function initAudio() {
