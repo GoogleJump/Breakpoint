@@ -2,19 +2,42 @@
 <html>
 <body>
 
-<canvas id="myCanvas" width="200" height="100" style="border:1px solid #c3c3c3;">
-Your browser does not support the HTML5 canvas tag.
-</canvas>
+<canvas id="myCanvas" width="800" height="800" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
 
 <script>
+// we'll need separate functions to draw the circles, place them on the map according to location, etc
+// function drawShape()
+// function addPoint(lat, lon, count, color)
 
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
-ctx.fillStyle = "#FF0000";
-ctx.fillRect(0,0,150,75);
+
+
+var canvas = document.getElementById('myCanvas');
+var ctx = canvas.getContext('2d');
+
+var x = 100,
+    y = 75,
+    // Radii of the white glow.
+    innerRadius = 3,
+    outerRadius = 15,
+    // Radius of the entire circle.
+    radius = 20;
+
+// we will create multiple gradients with different colors to represent different intensities
+var gradient1 = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
+gradient1.addColorStop(0, 'white');
+gradient1.addColorStop(1, 'blue');
+var gradient2 = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
+gradient2.addColorStop(0, 'white');
+gradient2.addColorStop(1, 'red');
+
+ctx.arc(x, y, radius, 0, 2 * Math.PI);
+
+ctx.fillStyle = gradient1;
+ctx.fill();
+
 
 </script>
 
 </body>
 </html>
-
