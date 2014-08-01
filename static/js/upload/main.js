@@ -60,11 +60,12 @@ function toggleRecording() {
         audioRecorder.stop();
         //e.classList.remove("recording");
         started = false;
-        audioRecorder.getBuffers( gotBuffers );
+        audioRecorder.exportWAV(doneEncoding);
         console.log("Stopped recording.");
         var callback = function() {
             console.log(JSON.parse(this.responseText));
         }
+        var ROOT_URL = 'http://127.0.0.1:9999'
         makeRequest(ROOT_URL + "/upload", 'nope', callback);
     } else {
         // start recording

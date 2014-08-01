@@ -31,6 +31,7 @@ this.onmessage = function(e){
       record(e.data.buffer);
       break;
     case 'exportWAV':
+      console.log("exportWav in recorderWorker running");
       exportWAV(e.data.type);
       break;
     case 'exportMonoWAV':
@@ -61,7 +62,12 @@ function exportWAV(type){
   var interleaved = interleave(bufferL, bufferR);
   var dataview = encodeWAV(interleaved);
   var audioBlob = new Blob([dataview], { type: type });
-
+  var callback = function() {
+      console.log(JSON.parse(this.responseText));
+  }
+  var ROOT_URL = 'http://127.0.0.1:9999'
+  //makeRequest(ROOT_URL + "/upload", 'nope', callback);
+  console.log("export audio tiem?")
   this.postMessage(audioBlob);
 }
 
