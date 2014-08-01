@@ -6,34 +6,32 @@
 Your browser does not support the HTML5 canvas tag.</canvas>
 
 <script>
-// we'll need separate functions to draw the circles, place them on the map according to location, etc
-// function drawShape()
-// function addPoint(lat, lon, count, color)
-
+// function addPoint(lat, lon, count, radius, color)
 
 
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 
-var x = 100,
-    y = 75,
+var lat = 100,
+    lon = 75,
     // Radii of the white glow.
-    innerRadius = 3,
+    innerRadius = 10,
     outerRadius = 15,
     // Radius of the entire circle.
     radius = 20;
 
 // we will create multiple gradients with different colors to represent different intensities
-var gradient1 = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
+var gradient1 = ctx.createRadialGradient(lat, lon, innerRadius, lat, lon, outerRadius);
 gradient1.addColorStop(0, 'white');
-gradient1.addColorStop(1, 'blue');
-var gradient2 = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
-gradient2.addColorStop(0, 'white');
-gradient2.addColorStop(1, 'red');
+gradient1.addColorStop(1, 'red');
+var gradient2 = ctx.createRadialGradient(lat, lon, innerRadius, lat, lon, outerRadius);
+gradient2.addColorStop(0, 'yellow');
+gradient2.addColorStop(0.5, 'orange');
+gradient2.addColorStop(1, 'blue');
 
-ctx.arc(x, y, radius, 0, 2 * Math.PI);
+ctx.arc(lat, lon, radius, 0, 2 * Math.PI);
 
-ctx.fillStyle = gradient1;
+ctx.fillStyle = gradient2;
 ctx.fill();
 
 
