@@ -39,9 +39,9 @@ function saveAudio() {
 }
 
 function gotBuffers( buffers ) {
-    var canvas = document.getElementById( "wavedisplay" );
+    //var canvas = document.getElementById( "wavedisplay" );
 
-    drawBuffer( canvas.width, canvas.height, canvas.getContext('2d'), buffers[0] );
+    //drawBuffer( canvas.width, canvas.height, canvas.getContext('2d'), buffers[0] );
 
     // the ONLY time gotBuffers is called is right after a new recording is completed - 
     // so here's where we should set up the download.
@@ -73,8 +73,8 @@ function toggleRecording() {
         //e.classList.add("recording");
         started = true;
         audioRecorder.clear();
-        audioRecorder.record();
         console.log("Started recording.");
+        audioRecorder.record();
     }
 }
 
@@ -158,10 +158,12 @@ function gotStream(stream) {
     analyserNode = audioContext.createAnalyser();
     analyserNode.fftSize = 2048;
     inputPoint.connect( analyserNode );
+
     // core of the analysis:
-    // var freqByteData = new UintBArray(analyserNode.frequencyBinCount);
+    // var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
     // repeated step -
     // analyserNode.getByteFrequencyData(freqByteData);
+
 
     audioRecorder = new Recorder( inputPoint );
 
@@ -169,8 +171,25 @@ function gotStream(stream) {
     zeroGain.gain.value = 0.0;
     inputPoint.connect( zeroGain );
     zeroGain.connect( audioContext.destination );
+    toggleRecording();
+   
+    //var i = 0; 
+    //while (i < 1000) {
+    //    var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
+    //    analyserNode.getByteFrequencyData(freqByteData);
+    //    console.log(freqByteData);
+    //    i++;
+    //}
     // TODO visual feedback for recording can be done if we use the analysers
     //updateAnalysers();
+    //repeater();
+}
+
+function repeater() {
+    var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
+    analyserNode.getByteFrequencyData(freqByteData);
+    console.log(freqByteData);
+    window.requestAnimFrame(repeater);
 }
 
 function initAudio() {

@@ -2,8 +2,7 @@ function startRecording(lat, lng) {
     // triggered on location callback results
     console.log("received lat " + lat + ", long " + lng);
     initAudio();
-    toggleRecording();
-    //console.log("recording");
+    console.log("upload.js triggered recording");
     // toggleRecording(e) where e is (or at least, was) an image
     //<div id="controls">
     //<img id="record" src="img/mic128.png" onclick="toggleRecording(this);">
