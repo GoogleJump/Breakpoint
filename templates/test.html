@@ -6,19 +6,19 @@
 Your browser does not support the HTML5 canvas tag.</canvas>
 
 <script>
-// function addPoint(lat, lon, count, radius, color)
+ function addPoint(lat, lon, radius, opacity, color) {
 // need to figure out count: basically draw more circles at a certain point for higher intensities
 
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 
-var lat = 100,
-    lon = 75,
+//var lat = 100,
+    //lon = 75,
     // Radii of the white glow.
     innerRadius = 3,
-    outerRadius = 20,
+    outerRadius = 9;
     // Radius of the entire circle.
-    radius = 20;
+    //radius = 10;
 
 // we will hard code create multiple gradients with different colors to represent different intensities
 var gradient1 = ctx.createRadialGradient(lat, lon, innerRadius, lat, lon, outerRadius);
@@ -29,12 +29,16 @@ gradient2.addColorStop(0, 'white');
 gradient2.addColorStop(0.5, 'yellow');
 gradient2.addColorStop(1, 'red');
 
+ctx.beginPath();
+ctx.globalAlpha=opacity; //this is the opacity
 ctx.arc(lat, lon, radius, 0, 2 * Math.PI);
-ctx.arc(lat+5, lon+5, radius, 0, 2 * Math.PI); // how to make this another gradient
+ctx.closePath();
 
-ctx.fillStyle = gradient1;
+ctx.fillStyle = color; // originally gradient2
 ctx.fill();
-
+}
+addPoint(200, 200, 30, 0.2, "green")
+addPoint(300, 200, 10, 0.8, "red")
 
 </script>
 
