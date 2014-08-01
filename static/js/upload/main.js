@@ -62,11 +62,7 @@ function toggleRecording() {
         started = false;
         audioRecorder.exportWAV(doneEncoding);
         console.log("Stopped recording.");
-        var callback = function() {
-            console.log(JSON.parse(this.responseText));
-        }
-        var ROOT_URL = 'http://127.0.0.1:9999'
-        makeRequest(ROOT_URL + "/upload", 'nope', callback);
+        
     } else {
         // start recording
         if (!audioRecorder)
@@ -174,23 +170,8 @@ function gotStream(stream) {
     zeroGain.connect( audioContext.destination );
     toggleRecording();
    
-    //var i = 0; 
-    //while (i < 1000) {
-    //    var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
-    //    analyserNode.getByteFrequencyData(freqByteData);
-    //    console.log(freqByteData);
-    //    i++;
-    //}
     // TODO visual feedback for recording can be done if we use the analysers
     //updateAnalysers();
-    //repeater();
-}
-
-function repeater() {
-    var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
-    analyserNode.getByteFrequencyData(freqByteData);
-    console.log(freqByteData);
-    window.requestAnimFrame(repeater);
 }
 
 function initAudio() {
