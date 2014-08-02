@@ -60,7 +60,6 @@ function toggleRecording() {
     if (started) {
         // stop recording (this is where we upload all the things!)
         audioRecorder.stop();
-        //e.classList.remove("recording");
         started = false;
         audioRecorder.exportWAV(doneEncoding);
         console.log("Stopped recording.");
@@ -70,7 +69,6 @@ function toggleRecording() {
         // start recording
         if (!audioRecorder)
             return;
-        //e.classList.add("recording");
         started = true;
         audioRecorder.clear();
         console.log("Started recording.");
