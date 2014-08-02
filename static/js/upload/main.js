@@ -25,6 +25,8 @@ var analyserContext = null;
 var canvasWidth, canvasHeight;
 var recIndex = 0;
 var started = false;
+var volumes = [];
+var centroids = [];
 
 /* TODO:
 
@@ -62,6 +64,7 @@ function toggleRecording() {
         started = false;
         audioRecorder.exportWAV(doneEncoding);
         console.log("Stopped recording.");
+        clearInterval(handle);
         
     } else {
         // start recording
@@ -72,7 +75,14 @@ function toggleRecording() {
         audioRecorder.clear();
         console.log("Started recording.");
         audioRecorder.record();
+        handle = setInterval(analyze, 20);
     }
+}
+
+function analyze() {
+    var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
+    analyserNode.getByteFrequencyData(freqByteData); 
+    console.log(freqByteData);
 }
 
 function convertToMono( input ) {

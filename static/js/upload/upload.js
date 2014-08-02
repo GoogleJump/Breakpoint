@@ -13,17 +13,17 @@ function startRecording(lat, lng) {
 }
 
 // Calculates weighted average of frequencies, 'spectral centroid'
-function centroids(data, granularity) {
-    // granularity == tradeoff between quality and data size
-    // if upload sizes are an issue we'll go for lower quality
-
-}
-
-// Calculates list of volumes, to control radius
-function volumes(data, granularity) {
-    // granularity == tradeoff between quality and data size
-    // if upload sizes are an issue we'll go for lower quality
-}
+//function centroids(data, granularity) {
+//    // granularity == tradeoff between quality and data size
+//    // if upload sizes are an issue we'll go for lower quality
+//
+//}
+//
+//// Calculates list of volumes, to control radius
+//function volumes(data, granularity) {
+//    // granularity == tradeoff between quality and data size
+//    // if upload sizes are an issue we'll go for lower quality
+//}
 
 var success = function(position) {
     var latitude  = position.coords.latitude;
