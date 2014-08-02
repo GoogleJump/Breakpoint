@@ -84,6 +84,15 @@ function analyze() {
     volumes[volumes.length] = freqByteData.reduce(function(a, b) {
         return a + b;
     });
+    console.log("volume: " + volumes[volumes.length-1]);
+
+    var centroid = 0;
+    var factor = 20000.0/freqByteData.length;
+    for (var i=0; i<freqByteData.length;i++) {
+        centroid += freqByteData[i]*factor;
+    }
+    centroids[centroids.length] = centroid / volume;
+    console.log("centroid: " + centroids[centroids.length-1]);
 }
 
 function convertToMono( input ) {
