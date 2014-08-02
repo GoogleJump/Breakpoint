@@ -81,6 +81,9 @@ function analyze() {
     var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
     analyserNode.getByteFrequencyData(freqByteData); 
     console.log(freqByteData);
+    volumes[volumes.length] = freqByteData.reduce(function(a, b) {
+        return a + b;
+    });
 }
 
 function convertToMono( input ) {
