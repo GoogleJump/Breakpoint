@@ -80,17 +80,18 @@ function toggleRecording() {
 function analyze() {
     var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
     analyserNode.getByteFrequencyData(freqByteData); 
-    console.log(freqByteData);
-    volumes[volumes.length] = freqByteData.reduce(function(a, b) {
+    freqByteData = Array.apply( [], freqByteData);
+    //console.log(freqByteData);
+    var volume = freqByteData.reduce(function(a, b) {
         return a + b;
     });
-    console.log("volume: " + volumes[volumes.length-1]);
+    volumes[volumes.length] = volume;
+    console.log("volume: " + volume);
 
-    var centroid = 0;
     var factor = 20000.0/freqByteData.length;
-    for (var i=0; i<freqByteData.length;i++) {
-        centroid += freqByteData[i]*factor;
-    }
+    var centroid = freqByteData.reduce(function(p, c, i, a) {
+        return p + c*i*factor;
+    });
     centroids[centroids.length] = centroid / volume;
     console.log("centroid: " + centroids[centroids.length-1]);
 }
