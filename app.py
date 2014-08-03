@@ -77,7 +77,7 @@ def map():
                 'map.html', 
                 logged_in='var logged_in = false;',
                 username='var username="";',
-                token='var token="NOPE"'
+                token='var USER_TOKEN="NOPE"'
                 )
 
 @app.route('/upload', methods=['GET', 'POST'])
