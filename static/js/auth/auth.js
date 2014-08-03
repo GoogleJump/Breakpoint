@@ -16,7 +16,7 @@ function signinCallback(authResult) {
         var token = 'Bearer ' + authResult['access_token'];
         var receivedCallback = function() {
             var userInfo = JSON.parse(this.responseText);
-            username = userInfo.emails[0].value;
+            userName = userInfo.emails[0].value;
             var success = function() {
                 // do login stuff
                 var json = JSON.parse(this.responseText);
@@ -25,6 +25,8 @@ function signinCallback(authResult) {
                     //console.log('it worked!');
                     //console.log(username);
                     //addUserOverlay(username);
+                    username = userName;
+                    USER_TOKEN = json['token'];
                 } else {
                     // how can oauth login fail? idt it can
                 }

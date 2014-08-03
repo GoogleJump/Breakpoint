@@ -148,7 +148,10 @@ def login():
     elif request.method == 'GET':
         session['username'] = request.args.get('user')
         # when does it fail? idk
-        return jsonify(success=True)
+        return jsonify(
+                success=True,
+                token=hash(session['username']+SECRET_KEY)
+                )
     else:
         return "what are you doing stop pls"
     # if it's a GET request, it should include the email in it.
