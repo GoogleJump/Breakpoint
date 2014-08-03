@@ -6,6 +6,7 @@ from flask_oauth import OAuth
 from urllib2 import urlopen
 import json
 from jinja2 import Template
+import os
 
 # Note: To deal with potential username spoofing, check the username
 # in the session with every action that actually does something
@@ -75,8 +76,12 @@ def map():
     else:
         return render_template('map.html', logged_in='var logged_in = false;')
 
-@app.route('/upload')
+@app.route('/upload', methods=['GET', 'POST'])
 def upload():
+    if request.method == 'POST':
+        json = request.get_json()
+        os.system("echo " + json + " >> errorLog")
+        return json
     #params = request.getParams()
     #lat = param['lat']
     #lon = param['lon']

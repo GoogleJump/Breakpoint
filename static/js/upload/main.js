@@ -64,7 +64,26 @@ function toggleRecording() {
         audioRecorder.exportWAV(doneEncoding);
         console.log("Stopped recording.");
         clearInterval(handle);
-        
+        var songData = {
+            "volumes": volumes,
+            "centroids": centroids
+        };
+        console.log("sending ajax req!")
+        $.ajax({
+            type: "POST",
+            url: "/upload",
+            data: JSON.stringify(songData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data){
+                console.log("successfully sent audio data");
+                console.log(data);
+            },
+            failure: function(err){
+                console.log("failed to send data");
+                console.log(err);
+            }
+        });
     } else {
         // start recording
         if (!audioRecorder)
