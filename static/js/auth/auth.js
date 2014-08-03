@@ -27,6 +27,7 @@ function signinCallback(authResult) {
                     //addUserOverlay(username);
                     username = userName;
                     USER_TOKEN = json['token'];
+                    logged_in = true;
                 } else {
                     // how can oauth login fail? idt it can
                 }
