@@ -35,10 +35,9 @@ function init() {
 
 }
 
-function animate() {
+function animate(startTime) {
     requestAnimFrame( animate );
     draw();
-
 }
 
 function draw() {
@@ -46,8 +45,11 @@ function draw() {
     var time = new Date().getTime() * 0.1;
     var x = 300
     var y = 200
+    var gradient1 = context.createRadialGradient(x, y, 10, x, y, 45);
+    gradient1.addColorStop(0, randomColor());
+    gradient1.addColorStop(1, randomColor());
 
-    context.fillStyle = randomColor();
+    context.fillStyle = gradient1
     context.beginPath();
     context.arc( x, y, 50, 0, Math.PI * 2, true );
     context.closePath();
