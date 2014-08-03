@@ -6,7 +6,7 @@ from flask_oauth import OAuth
 from urllib2 import urlopen
 import json
 from jinja2 import Template
-import os
+import datetime
 
 # Note: To deal with potential username spoofing, check the username
 # in the session with every action that actually does something
@@ -48,10 +48,6 @@ class Bite(db.Document):
     location = db.GeoPointField()
     start_time = db.DateTimeField()
     duration = db.IntField()
-
-#testBite = Bite(centroids=[1, 2], volumes=[1, 2], duration=0)
-#testBite.save()
-
 # Setup Flask-Security
 user_datastore = MongoEngineUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
@@ -80,10 +76,20 @@ def map():
 def upload():
     if request.method == 'POST':
         json = request.get_json()
-        print json['volumes']
-        print json['centroids']
-        print json['latitude']
-        print json['longitude']
+        # note: duration = seconds of recording.
+        # currently we record centroids every 20ms
+        # we can get the duration by dividing # of centroids
+        # by 1s / 20ms
+        bite = Bite(
+                centroids=json['centroids'],
+                volumes=json['volumes'],
+                location=[json['latitude'], json['longitude']],
+                start_time=datetime.datetime.now(),
+                duration=len(json['centroids'])/50.0
+                )
+        bite.save()
+#testBite = Bite(centroids=[1, 2], volumes=[1, 2], duration=0)
+#testBite.save()
         return jsonify(placeholder=True)
     #params = request.getParams()
     #lat = param['lat']
