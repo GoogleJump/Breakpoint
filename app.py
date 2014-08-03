@@ -11,7 +11,7 @@ import datetime
 # Note: To deal with potential username spoofing, check the username
 # in the session with every action that actually does something
 # ie creating a sound bite, deleting, etc
-                    
+
 # Create app
 app = Flask(__name__)
 # FIXME: Disable debug mode in prodoction!
@@ -20,6 +20,7 @@ app.config['SECRET_KEY'] = 'replace_me_eventually'
 
 # MongoDB config
 # TODO load from file
+SECRET_KEY='iamverysecret'
 app.config['MONGODB_SETTINGS'] = {
                                     'DB': 'mangoes', 
                                     'USERNAME' : 'breakpoint', 
@@ -68,9 +69,16 @@ def map():
         return render_template(
                 'map.html', 
                 logged_in='var logged_in = true;', 
-                username='var username = "' + session['username'] + '"')
+                username='var username = "' + session['username'] + '"',
+                token='var USER_TOKEN="' + hash(session['username'] + SECRET_KEY)
+                )
     else:
-        return render_template('map.html', logged_in='var logged_in = false;')
+        return render_template(
+                'map.html', 
+                logged_in='var logged_in = false;',
+                username='var username="";',
+                token='var token="NOPE"'
+                )
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -87,7 +95,14 @@ def upload():
                 start_time=datetime.datetime.now(),
                 duration=len(json['centroids'])/50.0
                 )
-        bite.save()
+        print "token", json['token']
+        print "username hash", hash(session['username'] + SECRET_KEY)
+        if json['token'] == str(hash(session['username'] + SECRET_KEY)):
+            bite.save()
+        else:
+            print "what are you doing!?!?!"
+
+
 #testBite = Bite(centroids=[1, 2], volumes=[1, 2], duration=0)
 #testBite.save()
         return jsonify(placeholder=True)

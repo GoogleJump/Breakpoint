@@ -147,16 +147,21 @@
     <script type="text/javascript">
         {{logged_in|safe}}
         {{username|safe}}
+        {{token|safe}}
         $(document).ready(function() {
             // The other auth option: if the user hits the x, then there are no upload options for them
             $('#closebtn').click(function() {
                 $('#map-overlay').hide();
             });
             $('#upload').click(function() {
-                $('#stop').show();
-                // triggers location get and recording start
-                console.log("invading privacy...");
-                invadePrivacy();
+                if (logged_in) {
+                    $('#stop').show();
+                    // triggers location get and recording start
+                    console.log("invading privacy...");
+                    invadePrivacy();
+                } else {
+                    alert("You have to log in to upload!");
+                }
             });
 
             $('#stop').click(function() {

@@ -78,6 +78,7 @@ function toggleRecording() {
             data: JSON.stringify(biteData),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
+            token: USER_TOKEN,
             success: function(data){
                 console.log("successfully sent audio data");
                 console.log(data);
