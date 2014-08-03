@@ -70,7 +70,7 @@ def map():
                 'map.html', 
                 logged_in='var logged_in = true;', 
                 username='var username = "' + session['username'] + '"',
-                token='var USER_TOKEN="' + hash(session['username'] + SECRET_KEY)
+                token='var USER_TOKEN="' + str(hash(session['username'] + SECRET_KEY))
                 )
     else:
         return render_template(
@@ -88,12 +88,14 @@ def upload():
         # currently we record centroids every 20ms
         # we can get the duration by dividing # of centroids
         # by 1s / 20ms
+        myDuration=len(json['centroids'])/50.0
+        print myDuration
         bite = Bite(
                 centroids=json['centroids'],
                 volumes=json['volumes'],
                 location=[json['latitude'], json['longitude']],
                 start_time=datetime.datetime.now(),
-                duration=len(json['centroids'])/50.0
+                duration=myDuration               
                 )
         print "token", json['token']
         print "username hash", hash(session['username'] + SECRET_KEY)
