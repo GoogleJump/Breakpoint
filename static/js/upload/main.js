@@ -70,7 +70,8 @@ function toggleRecording() {
             "volumes": volumes,
             "centroids": centroids,
             "latitude": latitude,
-            "longitude": longitude
+            "longitude": longitude,
+            "token": USER_TOKEN
         };
         $.ajax({
             type: "POST",
@@ -78,7 +79,6 @@ function toggleRecording() {
             data: JSON.stringify(biteData),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            token: USER_TOKEN,
             success: function(data){
                 console.log("successfully sent audio data");
                 console.log(data);
