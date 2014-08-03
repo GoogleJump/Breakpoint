@@ -70,7 +70,7 @@ def map():
                 'map.html', 
                 logged_in='var logged_in = true;', 
                 username='var username = "' + session['username'] + '"',
-                token='var USER_TOKEN="' + str(hash(session['username'] + SECRET_KEY))
+                token='var USER_TOKEN="' + str(hash(session['username'] + SECRET_KEY)) +'"'
                 )
     else:
         return render_template(
