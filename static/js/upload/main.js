@@ -27,6 +27,8 @@ var recIndex = 0;
 var started = false;
 var volumes = [];
 var centroids = [];
+var latitude;
+var longitude;
 
 /* TODO:
 
@@ -64,15 +66,16 @@ function toggleRecording() {
         audioRecorder.exportWAV(doneEncoding);
         console.log("Stopped recording.");
         clearInterval(handle);
-        var songData = {
+        var biteData = {
             "volumes": volumes,
-            "centroids": centroids
+            "centroids": centroids,
+            "latitude": latitude,
+            "longitude": longitude
         };
-        console.log("sending ajax req!")
         $.ajax({
             type: "POST",
             url: "/upload",
-            data: JSON.stringify(songData),
+            data: JSON.stringify(biteData),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data){
@@ -214,7 +217,9 @@ function gotStream(stream) {
     //updateAnalysers();
 }
 
-function initAudio() {
+function initAudio(lat, lng) {
+        latitude = lat;
+        longitude = lng;
         if (!navigator.getUserMedia)
             navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         if (!navigator.cancelAnimationFrame)

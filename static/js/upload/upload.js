@@ -1,7 +1,7 @@
 function startRecording(lat, lng) {
     // triggered on location callback results
     console.log("received lat " + lat + ", long " + lng);
-    initAudio();
+    initAudio(lat, lng);
 }
 
 var success = function(position) {

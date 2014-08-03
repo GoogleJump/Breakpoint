@@ -82,6 +82,8 @@ def upload():
         json = request.get_json()
         print json['volumes']
         print json['centroids']
+        print json['latitude']
+        print json['longitude']
         return jsonify(placeholder=True)
     #params = request.getParams()
     #lat = param['lat']
