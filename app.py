@@ -80,8 +80,9 @@ def map():
 def upload():
     if request.method == 'POST':
         json = request.get_json()
-        os.system("echo " + json + " >> errorLog")
-        return json
+        print json['volumes']
+        print json['centroids']
+        return jsonify(placeholder=True)
     #params = request.getParams()
     #lat = param['lat']
     #lon = param['lon']
