@@ -66,6 +66,14 @@ function toggleRecording() {
         audioRecorder.exportWAV(doneEncoding);
         console.log("Stopped recording.");
         clearInterval(handle);
+        // slice off leading NaN and 0 values from sound data
+        for (var i=0;i<centroids.length;i++) {
+            if (typeof e == "number") {
+                centroids = centroids.slice(i, centroids.length);
+                volumes = volumes.slice(i, volumes.length);
+                break;
+            }
+        }
         var biteData = {
             "volumes": volumes,
             "centroids": centroids,
