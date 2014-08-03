@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <script src="randomColor.js"></script>
+<script>
+// requestAnim shim layer by Paul Irish
+    window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame       || 
+              window.webkitRequestAnimationFrame || 
+              window.mozRequestAnimationFrame    || 
+              window.oRequestAnimationFrame      || 
+              window.msRequestAnimationFrame     || 
+              function(/* function */ callback, /* DOMElement */ element){
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })();
+  
+
+// example code from mr doob : http://mrdoob.com/lab/javascript/requestanimationframe/
+
+var canvas, context, toggle;
+
+init();
+animate();
+
+function init() {
+
+    canvas = document.createElement( 'canvas' );
+    canvas.width = 512;
+    canvas.height = 512;
+
+    context = canvas.getContext( '2d' );
+
+    document.body.appendChild( canvas );
+
+}
+
+function animate() {
+    requestAnimFrame( animate );
+    draw();
+
+}
+
+function draw() {
+
+    var time = new Date().getTime() * 0.1;
+    var x = 300
+    var y = 200
+
+    context.fillStyle = randomColor({hue: 'blue', count: 18});
+    context.beginPath();
+    context.arc( x, y, 50, 0, Math.PI * 2, true );
+    context.closePath();
+    context.fill();
+
+}
+</script>
+</html>
