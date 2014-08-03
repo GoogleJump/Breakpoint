@@ -71,6 +71,8 @@ def map():
     #    print bite
     print "filtered by location: "
     print Bite.objects(location__within_box=[(0.0, 50.0), (-130.0, 0.0)])
+    print "reduceddzdzd"
+    print Bite.objects(location__within_distance=[(37, -122), 20])
     logged_in = 'username' in session
     if logged_in:
         return render_template(

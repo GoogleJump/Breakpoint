@@ -104,7 +104,8 @@ canvasOverlay.prototype.draw = function() {
     div.style.top = ne.y + 'px';
     div.style.width = (ne.x - sw.x) + 'px';
     div.style.height = (sw.y - ne.y) + 'px';
-
+    $('#heat').width = $('#map-canvas').width();
+    $('#heat').height = $('#map-canvas').height();
 };
 
 // The onRemove() method will be called automatically from the API if 
