@@ -49,6 +49,7 @@ class Bite(db.Document):
     location = db.GeoPointField()
     start_time = db.DateTimeField()
     duration = db.FloatField()
+
 # Setup Flask-Security
 user_datastore = MongoEngineUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
@@ -84,18 +85,24 @@ def map():
 def upload():
     if request.method == 'POST':
         json = request.get_json()
-        # note: duration = seconds of recording.
+r       # note: duration = seconds of recording.
         # currently we record centroids every 20ms
         # we can get the duration by dividing # of centroids
         # by 1s / 20ms
-        myDuration=len(json['centroids'])/50.0
-        print myDuration
+        my_duration=len(json['centroids'])/50.0
+        print "centroids", json['centroids']
+        print "volumes", json['volumes']
+        print "latitude", json['latitude']
+        print "longitude", json['longitude']
+        print "start_time", datetime.datetime.now()
+        print "duration", my_duration
+        print "duration type: ", type(my_duration)
         bite = Bite(
                 centroids=json['centroids'],
                 volumes=json['volumes'],
                 location=[json['latitude'], json['longitude']],
                 start_time=datetime.datetime.now(),
-                duration=myDuration               
+                duration=my_duration               
                 )
         print "token", json['token']
         print "username hash", hash(session['username'] + SECRET_KEY)
