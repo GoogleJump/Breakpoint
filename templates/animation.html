@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-  <script src="randomColor.js"></script>
+<script src="randomColor.js"></script>
 <script>
 // requestAnim shim layer by Paul Irish
     window.requestAnimFrame = (function(){
@@ -37,51 +37,37 @@ function init() {
 
 function animate() {
     requestAnimFrame( animate );
-    draw();
+    draw(300, 200, 50, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 }
 
-// function draw() {
 
-//     var x = 300
-//     var y = 200
-//     var color = randomColor({hue: 'red', count: 18}[0]);
+function draw(x, y, radius, centroid) {
 
+   var gradient1 = context.createRadialGradient(x, y, radius/3, x, y, radius);
+   //centroid = Math.floor(Math.random()*11);
+   var c;
+   //var centroid = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+   for(i in centroid) {
 
-
-//     var gradient1 = context.createRadialGradient(x, y, 10, x, y, 45);
-//     gradient1.addColorStop(0, color);
-//     gradient1.addColorStop(1, color);
-
-//     context.fillStyle = gradient1
-//     context.beginPath();
-//     context.arc( x, y, 50, 0, Math.PI * 2, true );
-//     context.closePath();
-//     context.fill();
-
-// }
-function draw() {
-   var centroid;
-   var time = new Date().getTime() * 0.1;
-   var x = 300
-   var y = 200
-   var gradient1 = context.createRadialGradient(x, y, 10, x, y, 45);
-   centroid = Math.floor(Math.random()*11);
-   if(centroid <=5)
+   if(centroid[i] <=5)
    {
-  gradient1.addColorStop(0, randomColor({hue: 'red', count: 18})[0]);
-  gradient1.addColorStop(1, randomColor({hue: 'red', count: 18})[0]); 
+  		c = randomColor({hue: 'yellow', count: 18})[0];
    } 
-   else if(centroid >5 )
+   else if(centroid[i] >5 )
    {
-gradient1.addColorStop(0, randomColor({hue: 'blue', count: 18})[0]);
-  gradient1.addColorStop(1, randomColor({hue: 'blue', count: 18})[0]); 
+ 		c = randomColor({hue: 'red', count: 18})[0]; 
 
    }
+
+   gradient1.addColorStop(0, c);
+   gradient1.addColorStop(1, c); 
+
    context.fillStyle = gradient1
    context.beginPath();
-   context.arc( x, y, 50, 0, Math.PI * 2, true );
+   context.arc( x, y, radius, 0, Math.PI * 2, true );
    context.closePath();
    context.fill();
+}
 
 }
 </script>
