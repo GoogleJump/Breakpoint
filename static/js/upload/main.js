@@ -68,8 +68,9 @@ function toggleRecording() {
         clearInterval(handle);
         // slice off leading NaN and 0 values from sound data
         for (var i=0;i<centroids.length;i++) {
-            if (typeof e == "number") {
+            if (typeof centroids[i] == "number") {
                 centroids = centroids.slice(i, centroids.length);
+                console.log(centroids);
                 volumes = volumes.slice(i, volumes.length);
                 break;
             }
