@@ -44,10 +44,10 @@ class User(db.Document, UserMixin):
 
 class Bite(db.Document):
     centroids = db.ListField(db.FloatField(), default=list)
-    volumes = db.ListField(db.FloatField(), default=list)
+    volumes = db.ListField(db.IntField(), default=list)
     location = db.GeoPointField()
     start_time = db.DateTimeField()
-    duration = db.IntField()
+    duration = db.FloatField()
 # Setup Flask-Security
 user_datastore = MongoEngineUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
