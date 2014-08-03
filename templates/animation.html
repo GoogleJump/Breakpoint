@@ -35,25 +35,53 @@ function init() {
 
 }
 
-function animate(startTime) {
+function animate() {
     requestAnimFrame( animate );
     draw();
 }
 
+// function draw() {
+
+//     var x = 300
+//     var y = 200
+//     var color = randomColor({hue: 'red', count: 18}[0]);
+
+
+
+//     var gradient1 = context.createRadialGradient(x, y, 10, x, y, 45);
+//     gradient1.addColorStop(0, color);
+//     gradient1.addColorStop(1, color);
+
+//     context.fillStyle = gradient1
+//     context.beginPath();
+//     context.arc( x, y, 50, 0, Math.PI * 2, true );
+//     context.closePath();
+//     context.fill();
+
+// }
 function draw() {
+   var centroid;
+   var time = new Date().getTime() * 0.1;
+   var x = 300
+   var y = 200
+   var gradient1 = context.createRadialGradient(x, y, 10, x, y, 45);
+   centroid = Math.floor(Math.random()*11);
+   if(centroid <=5)
+   {
+  gradient1.addColorStop(0, randomColor({hue: 'red', count: 18})[0]);
+  gradient1.addColorStop(1, randomColor({hue: 'red', count: 18})[0]); 
+   } 
+   else if(centroid >5 )
+   {
+gradient1.addColorStop(0, randomColor({hue: 'blue', count: 18})[0]);
+  gradient1.addColorStop(1, randomColor({hue: 'blue', count: 18})[0]); 
 
-    var time = new Date().getTime() * 0.1;
-    var x = 300
-    var y = 200
-    var gradient1 = context.createRadialGradient(x, y, 10, x, y, 45);
-    gradient1.addColorStop(0, randomColor());
-    gradient1.addColorStop(1, randomColor());
-
-    context.fillStyle = gradient1
-    context.beginPath();
-    context.arc( x, y, 50, 0, Math.PI * 2, true );
-    context.closePath();
-    context.fill();
+   }
+   context.fillStyle = gradient1
+   context.beginPath();
+   context.arc( x, y, 50, 0, Math.PI * 2, true );
+   context.closePath();
+   context.fill();
 
 }
 </script>
