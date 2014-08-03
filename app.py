@@ -85,7 +85,7 @@ def map():
 def upload():
     if request.method == 'POST':
         json = request.get_json()
-r       # note: duration = seconds of recording.
+        # note: duration = seconds of recording.
         # currently we record centroids every 20ms
         # we can get the duration by dividing # of centroids
         # by 1s / 20ms
