@@ -66,10 +66,11 @@ def audio():
 
 @app.route('/map')
 def map():
-    for bite in Bite.objects:
-        print bite
+    print Bite.objects
+    #for bite in Bite.objects:
+    #    print bite
     print "filtered by location: "
-    print Bite.objects(location__within_box=[(-125.0, 35.0), (-100.0, 40.0)])
+    print Bite.objects(location__within_box=[(0.0, 50.0), (-130.0, 0.0)])
     logged_in = 'username' in session
     if logged_in:
         return render_template(
