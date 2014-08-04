@@ -101,7 +101,9 @@ def query():
         song['centroids'] = bite.centroids
         song['volumes'] = bite.volumes
         song['location'] = bite.location
-        song['start_time'] = bite.start_time
+        # TODO start_time is not serializable, convert it
+        #song['start_time'] = bite.start_time
+        song['start_time'] = 100
         songs.append(song)
     return dumps(songs)
 
