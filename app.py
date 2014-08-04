@@ -94,6 +94,8 @@ def query():
     # TODO query based on json input
     json = request.get_json()
     print "bounding box: ", json['box']
+    #should query for points within the latlong box
+    #Bite.objects(location__within_box(json['box']))
     print "zoom level: ", json['zoom']
     songs = []
     for bite in Bite.objects:
@@ -126,7 +128,7 @@ def upload():
         bite = Bite(
                 centroids=json['centroids'],
                 volumes=json['volumes'],
-                location=[json['latitude'], json['longitude']],
+                location=[json['longitude'], json['latitude']],
                 start_time=datetime.datetime.now(),
                 duration=my_duration,
                 username=session['username']

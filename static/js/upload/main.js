@@ -69,7 +69,7 @@ function toggleRecording() {
         // slice off leading NaN and 0 values from sound data
         for (var i=0;i<centroids.length;i++) {
             if (!isNaN(centroids[i])) {
-                console.log("I think this is a number: " + centroids[i]);
+                //console.log("I think this is a number: " + centroids[i]);
                 centroids = centroids.slice(i, centroids.length);
                 console.log(centroids);
                 volumes = volumes.slice(i, volumes.length);
