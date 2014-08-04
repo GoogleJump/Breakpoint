@@ -1,5 +1,15 @@
 //var overlay;
 //canvasOverlay.prototype = new google.maps.OverlayView();
+window.requestAnimFrame = (function(){
+    return  window.requestAnimationFrame       || 
+        window.webkitRequestAnimationFrame || 
+        window.mozRequestAnimationFrame    || 
+        window.oRequestAnimationFrame      || 
+        window.msRequestAnimationFrame     || 
+        function(/* function */ callback, /* DOMElement */ element){
+        window.setTimeout(callback, 1000 / 60);
+    };
+})();
 
 var map;
 var canvasLayer;
@@ -56,6 +66,7 @@ function resize() {
 }
 
 function update() {
+    console.log("canvas is updating!");
     // clear previous canvas contents
     var canvasWidth = canvasLayer.canvas.width;
     var canvasHeight = canvasLayer.canvas.height;
