@@ -4,9 +4,9 @@ from flask.ext.security import Security, MongoEngineUserDatastore, \
         UserMixin, RoleMixin, login_required
 from flask_oauth import OAuth
 from urllib2 import urlopen
-import json
 from jinja2 import Template
 import datetime
+from json import dumps
 
 # Note: To deal with potential username spoofing, check the username
 # in the session with every action that actually does something
@@ -79,17 +79,33 @@ def map():
                 'map.html', 
                 logged_in='var logged_in = true;', 
                 username='var username = "' + session['username'] + '"',
-                token='var USER_TOKEN="' + str(hash(session['username'] + SECRET_KEY)) +'"'
-                )
+                token='var USER_TOKEN="' + str(hash(session['username'] + SECRET_KEY)) +'"')
     else:
         return render_template(
                 'map.html', 
                 logged_in='var logged_in = false;',
                 username='var username="";',
-                token='var USER_TOKEN="NOPE"'
-                )
+                token='var USER_TOKEN="NOPE"')
 
-@app.route('/upload', methods=['GET', 'POST'])
+# Takes requests from clients for sound bites
+# For now, we'll just return all of them...
+@app.route("/query", methods=['POST'])
+def query():
+    # TODO query based on json input
+    json = request.get_json()
+    print "bounding box: ", json['box']
+    print "zoom level: ", json['zoom']
+    songs = []
+    for bite in Bite.objects:
+        song = {}
+        song['centroids'] = bite.centroids
+        song['volumes'] = bite.volumes
+        song['location'] = bite.location
+        song['start_time'] = bite.start_time
+        songs.append(song)
+    return dumps(songs)
+
+@app.route('/upload', methods=['POST'])
 def upload():
     if request.method == 'POST' and 'username' in session:
         json = request.get_json()

@@ -67,6 +67,26 @@ function resize() {
 
 function update() {
     console.log("canvas is updating!");
+    requestData = {
+        box: [[10, 20], [30, 40]],
+        zoom: 17
+    }
+    $.ajax({
+            type: "POST",
+            url: "/query",
+            data: JSON.stringify(requestData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data){
+                console.log("server response to db query:");
+                console.log(data);
+            },
+            failure: function(err){
+                console.log("failed to ajax");
+                console.log(err);
+            }
+    });
+
     // clear previous canvas contents
     var canvasWidth = canvasLayer.canvas.width;
     var canvasHeight = canvasLayer.canvas.height;
@@ -74,6 +94,8 @@ function update() {
 
     // we like our rectangles green
     context.fillStyle = 'rgba(0, 255, 0, 1)';
+
+    
 
     /* We need to scale and translate the map for current view.
      * see https://developers.google.com/maps/documentation/javascript/maptypes#MapCoordinates
