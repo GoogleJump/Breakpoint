@@ -6,7 +6,7 @@ from flask_oauth import OAuth
 from urllib2 import urlopen
 from jinja2 import Template
 import datetime
-import json
+from json import dumps
 
 # Note: To deal with potential username spoofing, check the username
 # in the session with every action that actually does something
@@ -79,15 +79,13 @@ def map():
                 'map.html', 
                 logged_in='var logged_in = true;', 
                 username='var username = "' + session['username'] + '"',
-                token='var USER_TOKEN="' + str(hash(session['username'] + SECRET_KEY)) +'"'
-                )
+                token='var USER_TOKEN="' + str(hash(session['username'] + SECRET_KEY)) +'"')
     else:
         return render_template(
                 'map.html', 
                 logged_in='var logged_in = false;',
                 username='var username="";',
-                token='var USER_TOKEN="NOPE"'
-                )
+                token='var USER_TOKEN="NOPE"')
 
 # Takes requests from clients for sound bites
 # For now, we'll just return all of them...
@@ -105,7 +103,7 @@ def query():
         song['location'] = bite.location
         song['start_time'] = bite.start_time
         songs.append(song)
-    return json.dumps(songs)
+    return dumps(songs)
 
 @app.route('/upload', methods=['POST'])
 def upload():
