@@ -26,10 +26,11 @@ function updateCache() {
     cachedBox[0][1] = bounds.xa.j + CACHE_SCOPE;
     cachedBox[1][0] = bounds.pa.k + CACHE_SCOPE;
     cachedBox[1][1] = bounds.pa.j - CACHE_SCOPE; 
-    requestData = {
-        box: cachedBox,
+    var corners = [[cachedBox[1][1], cachedBox[0][0]], [cachedBox[1][0], cachedBox[0][1]]];
+    var requestData = {
+        box: corners,
         zoom: map.zoom
-    }
+    };
     $.ajax({
             type: "POST",
             url: "/query",
@@ -56,10 +57,10 @@ function needsUpdate() {
     var corner2 = cachedBox[0][1] <= bounds.xa.j;
     var corner3 = cachedBox[1][0] <= bounds.pa.k;
     var corner4 = cachedBox[1][1] >= bounds.pa.j;
-    //console.log("corner1 " + corner1);
-    //console.log("corner2 " + corner2);
-    //console.log("corner3 " + corner3);
-    //console.log("corner4 " + corner4);
+    //console.log("corner1 " + bounds.xa.k);
+    //console.log("corner2 " + bounds.xa.j);
+    //console.log("corner3 " + bounds.pa.k);
+    //console.log("corner4 " + bounds.pa.j);
     var bool = corner1 || corner2 || corner3 || corner4;
     //console.log("bool: " + bool);
     return bool;

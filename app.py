@@ -46,7 +46,7 @@ class User(db.Document, UserMixin):
 class Bite(db.Document):
     centroids = db.ListField(db.FloatField(), default=list)
     volumes = db.ListField(db.IntField(), default=list)
-    location = db.GeoPointField()
+    location = db.PointField()
     start_time = db.DateTimeField()
     duration = db.FloatField()
     username = db.StringField()
@@ -66,13 +66,13 @@ def audio():
 
 @app.route('/map')
 def map():
-    print Bite.objects
+    #print Bite.objects
     #for bite in Bite.objects:
     #    print bite
-    print "filtered by location: "
-    print Bite.objects(location__within_box=[(0.0, 50.0), (-130.0, 0.0)])
-    print "reduceddzdzd"
-    print Bite.objects(location__within_distance=[(37, -122), 20])
+    #print "filtered by location: "
+    #print Bite.objects(location__within_box=[(0.0, 50.0), (-130.0, 0.0)])
+    #print "reduceddzdzd"
+    #print Bite.objects(location__within_distance=[(37, -122), 20])
     logged_in = 'username' in session
     if logged_in:
         return render_template(
@@ -93,12 +93,15 @@ def map():
 def query():
     # TODO query based on json input
     json = request.get_json()
-    print "bounding box: ", json['box']
+    box = json['box']
+    print "bounding box: ", box
     #should query for points within the latlong box
     print "zoom level: ", json['zoom']
-    print "queries i should be returning: ", Bite.objects(location__within_box=[json['box'][1], json['box'][0]])
+    #box = [(0, 90), (0, 90)]
+    #print "queries: ", Bite.objects(location__geo_within_box=[(-125.0, 35.0), (-100.0, 40.0)])
+    #print "queries i am returning: ", Bite.objects(location__geo_within_box=box)
     songs = []
-    for bite in Bite.objects:
+    for bite in Bite.objects(location__geo_within_box=box):
         song = {}
         song['centroids'] = bite.centroids
         song['volumes'] = bite.volumes
@@ -107,6 +110,8 @@ def query():
         #song['start_time'] = bite.start_time
         song['start_time'] = 100
         songs.append(song)
+
+    #print "queries i should be returning: ", songs[0]
     return dumps(songs)
 
 @app.route('/upload', methods=['POST'])
