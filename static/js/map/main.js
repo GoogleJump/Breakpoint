@@ -40,6 +40,7 @@ function updateCache() {
             success: function(data){
                 console.log("server response to db query:");
                 console.log(data);
+                songs = arrayUnique(songs.concat(data));
             },
             failure: function(err){
                 console.log("failed to ajax");
@@ -65,6 +66,18 @@ function needsUpdate() {
     //console.log("bool: " + bool);
     return bool;
 }
+
+function arrayUnique(array) {
+    var a = array.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+};
 
 function initialize() {
 
@@ -101,6 +114,7 @@ function initialize() {
     };
     canvasLayer = new CanvasLayer(canvasLayerOptions);
     context = canvasLayer.canvas.getContext('2d');
+    animate();
 } 
 
 function resize() {

@@ -109,6 +109,7 @@ def query():
         # TODO start_time is not serializable, convert it
         #song['start_time'] = bite.start_time
         song['start_time'] = 100
+        song['duration'] = bite.duration
         songs.append(song)
 
     #print "queries i should be returning: ", songs[0]
