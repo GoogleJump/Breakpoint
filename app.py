@@ -95,8 +95,8 @@ def query():
     json = request.get_json()
     print "bounding box: ", json['box']
     #should query for points within the latlong box
-    #Bite.objects(location__within_box(json['box']))
     print "zoom level: ", json['zoom']
+    print "queries i should be returning: ", Bite.objects(location__within_box=[json['box'][1], json['box'][0]])
     songs = []
     for bite in Bite.objects:
         song = {}
