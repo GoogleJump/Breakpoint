@@ -14,16 +14,22 @@ function(/* function */ callback, /* DOMElement */ element){
 window.setTimeout(callback, 1000 / 60);
 };
 })();
-var timeout = new Date().getTime() + .05*60*1000; // 30 sec
+var timeout = new Date().getTime() + .15*60*1000; // 30 sec
 
 // example code from mr doob : http://mrdoob.com/lab/javascript/requestanimationframe/
 
 var canvas, context, toggle;
 
 init();
-var i = 0;
-//var centroids = [10,9,8,7,6,5,4,3,2,1];
-animate();
+var count = 0;
+var centroids = new Array(120);
+var volumes = new Array(120);
+for(var i=0;i<120;i++)
+{
+	centroids[i] = i;
+	volumes[i] = i;
+}
+animate(count);
 
 function init() {
 
@@ -34,71 +40,110 @@ canvas.height = 512;
 context = canvas.getContext( '2d' );
 
 document.body.appendChild( canvas );
+
 }
 
 
-function animate() {
-draw(300, 200, 50, 0.5,6);
-var requestId = requestAnimFrame( animate);
-    if(new Date().getTime() > timeout){ // measure the length of the function and stop it.
-        context.clearRect(0,0,canvas.width,canvas.height); 
-        console.log(canvas.width)  
-        draw(300,200,50,0.5,5); 
-    }
+function animate(count) {
+	draw(400, 200, 50, 0.3,centroids[count],volumes[count]);
+	console.log(centroids[count]);
+	var requestId = requestAnimFrame( function() {
+	count++;
+        animate(count)});
+	if(count == 120){
+		context.clearRect(0,0,canvas.width,canvas.height);
+		cancelAnimationFrame(requestId);
+}
 }
 
-function draw(x, y, radius, opacity, centroids) {
+
+
+function draw(x, y, radius, opacity, centroids,volumes) {
 
 var gradient1 = context.createRadialGradient(x, y, radius/3, x, y, radius);
-//var centroids =Math.floor(Math.random()*6)+1;
 var c;
+    //Centroids conditionals
+	if(centroids <=20) 
+	{
+		//alert(".");
+		c = randomColor({hue: 'purple', count: 18})[0];
+		gradient1.addColorStop(0, "purple");
+		gradient1.addColorStop(1, c); 
+	}
+	if(centroids >20 && centroids <=40)
+	{
+		c = randomColor({hue: 'purple', count: 18})[0];
+		gradient1.addColorStop(0, "blue");
+		gradient1.addColorStop(1, c); 
 
-    if(centroids ==1) 
-    {
-        c = randomColor({hue: 'purple', count: 18})[0];
-        gradient1.addColorStop(0, "purple");
-        gradient1.addColorStop(1, c);
-    } 
-    else if(centroids ==2) 
-    {
-        c = randomColor({hue: 'blue', count: 18})[0];
-        gradient1.addColorStop(0, "blue");
-        gradient1.addColorStop(1, c);
-    }
-    else if(centroids ==3) 
-    {
-        c = randomColor({hue: 'green', count: 18})[0];
-        gradient1.addColorStop(0, "green");
-        gradient1.addColorStop(1, c);
-    }
-    else if(centroids ==4) 
-    {
-        c = randomColor({hue: 'yellow', count: 18})[0];
-        gradient1.addColorStop(0, "yellow");
-        gradient1.addColorStop(1, c);
-    }
-    else if(centroids ==5) 
-    {
-        c = randomColor({hue: 'orange', count: 18})[0];
-        gradient1.addColorStop(0, "orange");
-        gradient1.addColorStop(1, c);
-    }
-    else{
-        c = randomColor({hue: 'red', count: 18})[0];
-        gradient1.addColorStop(0, "red");
-        gradient1.addColorStop(1, c);
+	} 
+	if(centroids >40 && centroids <=60)
+	{
+		c = randomColor({hue: 'blue', count: 18})[0];
+		gradient1.addColorStop(0, "green");
+		gradient1.addColorStop(1, c); 
 
-    }
+	} 
+	if(centroids >60 && centroids <=80)
+	{
+		c = randomColor({hue: 'green', count: 18})[0];
+		gradient1.addColorStop(0, "yellow");
+		gradient1.addColorStop(1, c); 
 
-    context.fillStyle = gradient1;
-    context.globalAlpha=opacity; //this is the opacity
-    context.beginPath();
-    context.arc( x, y, radius, 0, Math.PI * 2, true );
-    context.closePath();
-    context.fill();
+	}
+	if(centroids>80 && centroids <=100){
+		c = randomColor({hue: 'yellow', count: 18})[0];
+		gradient1.addColorStop(0, "orange");
+		gradient1.addColorStop(1, c); 
 
-    
+	}
+	if(centroids>100){
+		c = randomColor({hue: 'orange', count: 18})[0];
+		gradient1.addColorStop(0, "red");
+		gradient1.addColorStop(1, c); 
+	
+	}
+
+	//Volume Conditionals.
+
+	if(volumes <=20) 
+	{
+		radius = 10;
+	}
+	if(volumes >20 && volumes <=40)
+	{
+		radius = 20;
+	} 
+	if(volumes >40 && volumes <=60)
+	{
+		radius = 30;
+	} 
+	if(volumes >60 && volumes <=80)
+	{
+		radius = 40;
+	} 
+	if(volumes >80 && volumes <=100)
+	{
+		radius = 50;
+	} 
+
+	if(volumes>100){
+		
+		radius = 60;
+	}
+
+
+
+	context.fillStyle = gradient1;
+	context.globalAlpha=opacity; //this is the opacity
+	context.beginPath();
+	context.arc( x, y, radius, 0, Math.PI * 2, true );
+	context.closePath();
+	context.fill();
+
+	
 
 }
 </script>
 </html>
+
