@@ -37,9 +37,10 @@ function updateCache() {
             data: JSON.stringify(requestData),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function(data){
+            success: function(data) {
                 console.log("server response to db query:");
                 console.log(data);
+                songs.concat(data);
             },
             failure: function(err){
                 console.log("failed to ajax");
