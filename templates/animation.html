@@ -1,74 +1,82 @@
-	<!DOCTYPE html>
-	<html>
-	<body>
-	<script src="randomColor.js"></script>
-	<script>
-	// requestAnim shim layer by Paul Irish
-	window.requestAnimFrame = (function(){
-	return  window.requestAnimationFrame       || 
-	window.webkitRequestAnimationFrame || 
-	window.mozRequestAnimationFrame    || 
-	window.oRequestAnimationFrame      || 
-	window.msRequestAnimationFrame     || 
-	function(/* function */ callback, /* DOMElement */ element){
-	window.setTimeout(callback, 1000 / 60);
-	};
-	})();
 
 
-	// example code from mr doob : http://mrdoob.com/lab/javascript/requestanimationframe/
+<!DOCTYPE html>
+<html>
+<body>
+<script src="randomColor.js"></script>
+<script>
+// requestAnim shim layer by Paul Irish
+window.requestAnimFrame = (function(){
+return  window.requestAnimationFrame       || 
+window.webkitRequestAnimationFrame || 
+window.mozRequestAnimationFrame    || 
+window.oRequestAnimationFrame      || 
+window.msRequestAnimationFrame     || 
+function(/* function */ callback, /* DOMElement */ element){
+window.setTimeout(callback, 1000 / 60);
+};
+})();
 
-	var canvas, context, toggle;
 
-	init();
-	var centroids = [10,9,8,7,6,5,4,3,2,1];
-	animate(centroids);
+// example code from mr doob : http://mrdoob.com/lab/javascript/requestanimationframe/
 
-	function init() {
+var canvas, context, toggle;
 
-	canvas = document.createElement( 'canvas' );
-	canvas.width = 512;
-	canvas.height = 512;
+init();
+var i = 0;
+//var centroids = [10,9,8,7,6,5,4,3,2,1];
+animate();
 
-	context = canvas.getContext( '2d' );
+function init() {
 
-	document.body.appendChild( canvas );
+canvas = document.createElement( 'canvas' );
+canvas.width = 512;
+canvas.height = 512;
 
-	}
+context = canvas.getContext( '2d' );
 
-	function animate(centroids) {
-	for(i =0; i< centroids.length;i++)
-	    draw(300, 200, 50, 0.3,centroids[i]);
-		//requestAnimFrame( animate );
-	}
+document.body.appendChild( canvas );
 
-	function draw(x, y, radius, opacity, centroids) {
+}
 
-	var gradient1 = context.createRadialGradient(x, y, radius/3, x, y, radius);
-	//var centroidsR = Math.floor(Math.random()*11);
-	var c;
+function animate() {
+draw(300, 200, 50, 0.3);
+requestAnimFrame( animate);
 
-	    if(centroids <=5) 
-	    {
-	        c = randomColor({hue: 'blue', count: 18})[0];
-	        gradient1.addColorStop(0, c);
-	        gradient1.addColorStop(1, c);
-	    } 
-	    else{
-	        c = randomColor({hue: 'red', count: 18})[0];
-	        gradient1.addColorStop(0, "red");
-	        gradient1.addColorStop(1, c);
+}
 
-	    }
 
-	    context.fillStyle = gradient1;
-	    context.globalAlpha=opacity; //this is the opacity
-	    context.beginPath();
-	    context.arc( x, y, radius, 0, Math.PI * 2, true );
-	    context.closePath();
-	    context.fill();
-	    
 
-	}
-	</script>
-	</html>
+function draw(x, y, radius, opacity, centroids) {
+
+var gradient1 = context.createRadialGradient(x, y, radius/3, x, y, radius);
+var centroidsR = Math.floor(Math.random()*11);
+var c;
+    
+
+    if(centroidsR <=5) 
+    {
+        //alert(".");
+        c = randomColor({hue: 'blue', count: 18})[0];
+        gradient1.addColorStop(0, "blue");
+        gradient1.addColorStop(1, c);
+    } 
+    else{
+        //alert(".");
+        c = randomColor({hue: 'red', count: 18})[0];
+        gradient1.addColorStop(0, "red");
+        gradient1.addColorStop(1, c);
+
+    }
+
+    context.fillStyle = gradient1;
+    context.globalAlpha=opacity; //this is the opacity
+    context.beginPath();
+    context.arc( x, y, radius, 0, Math.PI * 2, true );
+    context.closePath();
+    context.fill();
+    
+
+}
+</script>
+</html>
