@@ -23,8 +23,8 @@ function animate(count) {
     songs.forEach(function(song) {
         if (song['duration'] > 0) {
             draw(
-                song['location'][0],
-                song['location'][1], 
+                song['location']['coordinates'][0],
+                song['location']['coordinates'][1], 
                 50, 
                 0.3, 
                 song['centroids'][count], 
@@ -37,11 +37,6 @@ function animate(count) {
         count++;
         animate(count)
     });
-
-    //if(count == 120) {
-    //    //context.clearRect(0,0,canvas.width,canvas.height);
-    //    cancelAnimationFrame(requestId);
-    //}
 }
 
 // TODO singular centroid, volume
@@ -132,7 +127,7 @@ function updateCache() {
             success: function(data) {
                 console.log("server response to db query:");
                 console.log(data);
-                songs.concat(data);
+                songs = songs.concat(data);
             },
             failure: function(err){
                 console.log("failed to ajax");
@@ -231,7 +226,7 @@ function update() {
     /* We need to scale and translate the map for current view.
      * see https://developers.google.com/maps/documentation/javascript/maptypes#MapCoordinates
      */
-    var mapProjection = map.getProjection();
+    mapProjection = map.getProjection();
 
     /**
      * Clear transformation from last update by setting to identity matrix.

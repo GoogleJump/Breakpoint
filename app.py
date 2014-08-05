@@ -99,11 +99,12 @@ def query():
     box = json['box']
     print "bounding box: ", box
     # ensure that box objects are not sent multiple times
+
+    # TODO this stuff isn't preserved on refreshes though.. fix!
+    # maybe store in localstorage
     box_songs = Bite.objects(location__geo_within_box=box)
-    print "before filtering: ", box_songs
     box_songs = [s for s in box_songs if s.unique not in session['added']]
     session['added'] += [s.unique for s in box_songs]
-    print "after filtering: ", box_songs
     #box_songs = [s for s in Bite.objects(location__geo_within_box) if s.unique not in session
     songs = []
     for bite in box_songs:
