@@ -19,6 +19,98 @@ var rectWidth = 6.5;
 var songs = [];
 var cachedBox = [[0, 0], [0, 0]]; 
 
+function animate(count) {
+    songs.forEach(function(song) {
+        if (song['duration'] > 0) {
+            draw(
+                song['location'][0],
+                song['location'][1], 
+                50, 
+                0.3, 
+                song['centroids'][count], 
+                song['volumes'][count]);
+            song['duration'] -= 1.0 / 60.0;
+        }
+    });
+
+    var requestId = requestAnimFrame( function() {
+        count++;
+        animate(count)
+    });
+
+    //if(count == 120) {
+    //    //context.clearRect(0,0,canvas.width,canvas.height);
+    //    cancelAnimationFrame(requestId);
+    //}
+}
+
+// TODO singular centroid, volume
+function draw(x, y, radius, opacity, centroids,volumes) {
+    var gradient1 = context.createRadialGradient(x, y, radius/3, x, y, radius);
+    var c;
+    // FIXME refactor; too much repeated code
+    //Centroids conditionals
+    if (centroids <=20) {
+        //alert(".");
+        c = randomColor({hue: 'purple', count: 18})[0];
+        gradient1.addColorStop(0, "purple");
+        gradient1.addColorStop(1, c); 
+    }
+    if (centroids >20 && centroids <=40) {
+        c = randomColor({hue: 'purple', count: 18})[0];
+        gradient1.addColorStop(0, "blue");
+        gradient1.addColorStop(1, c); 
+    } 
+    if (centroids >40 && centroids <=60) {
+        c = randomColor({hue: 'blue', count: 18})[0];
+        gradient1.addColorStop(0, "green");
+        gradient1.addColorStop(1, c); 
+    } 
+    if (centroids >60 && centroids <=80) {
+        c = randomColor({hue: 'green', count: 18})[0];
+        gradient1.addColorStop(0, "yellow");
+        gradient1.addColorStop(1, c); 
+    }
+    if (centroids>80 && centroids <=100) {
+        c = randomColor({hue: 'yellow', count: 18})[0];
+        gradient1.addColorStop(0, "orange");
+        gradient1.addColorStop(1, c); 
+    }
+    if (centroids>100) {
+        c = randomColor({hue: 'orange', count: 18})[0];
+        gradient1.addColorStop(0, "red");
+        gradient1.addColorStop(1, c); 
+    }
+    //Volume Conditionals.
+    if(volumes <= 20) {
+        radius = 10;
+    }
+    if(volumes > 20 && volumes <=40) {
+        radius = 20;
+    } 
+    if(volumes > 40 && volumes <=60) {
+        radius = 30;
+    } 
+    if (volumes > 60 && volumes <=80) {
+        radius = 40;
+    } 
+    if (volumes > 80 && volumes <=100) {
+        radius = 50;
+    } 
+    if(volumes > 100) {
+        radius = 60;
+    }
+
+    context.fillStyle = gradient1;
+    context.globalAlpha=opacity; //this is the opacity
+    context.beginPath();
+    //var worldPoint = mapProjection.fromLatLngToPoint(rectLatLng)
+    var worldPoint = mapProjection.fromLatLngToPoint(x, y);
+    context.arc(worldPoint.x, worldPoint.y, radius, 0, Math.PI * 2, true);
+    context.closePath();
+    context.fill();
+}
+
 function updateCache() {
     var bounds = map.getBounds();
     CACHE_SCOPE = (5 / map.zoom);
@@ -114,8 +206,12 @@ function initialize() {
     };
     canvasLayer = new CanvasLayer(canvasLayerOptions);
     context = canvasLayer.canvas.getContext('2d');
-    animate();
+
+    animate(0);
 } 
+
+
+
 
 function resize() {
     // nothing to do here
@@ -130,7 +226,7 @@ function update() {
     context.clearRect(0, 0, canvasWidth, canvasHeight);
 
     // we like our rectangles green
-    context.fillStyle = 'rgba(0, 255, 0, 1)';
+    //context.fillStyle = 'rgba(0, 255, 0, 1)';
 
     /* We need to scale and translate the map for current view.
      * see https://developers.google.com/maps/documentation/javascript/maptypes#MapCoordinates
@@ -156,8 +252,8 @@ function update() {
     context.translate(-offset.x, -offset.y);
 
     // project rectLatLng to world coordinates and draw
-    var worldPoint = mapProjection.fromLatLngToPoint(rectLatLng);
-    context.fillRect(worldPoint.x, worldPoint.y, rectWidth, rectWidth);
+    //var worldPoint = mapProjection.fromLatLngToPoint(rectLatLng);
+    //context.fillRect(worldPoint.x, worldPoint.y, rectWidth, rectWidth);
     
     //console.log(needsUpdate());
     if (needsUpdate()) {
@@ -165,86 +261,4 @@ function update() {
     }
 }
 
-
-    ///** @constructor */
-    //function canvasOverlay(bounds, map) {
-    //
-    //    // Initialize all properties.
-    //    this.bounds_ = bounds;
-    //    this.map_ = map;
-    //
-    //    // Define a property to hold this canvas's div + the canvas.
-    //    // We'll actually create this div upon receipt of
-    //    // the onAdd() method so we'll leave it null for now.
-    //    this.canvas_ = null;
-    //    this.div_ = null;
-    //
-    //    // Explicitly call setMap on this overlay.
-    //    this.setMap(map);
-    //}
-    //
-    ///**
-    // * onAdd is called when the map's panes are ready and the overlay
-    // * has been added to the map.
-    // */
-    //canvasOverlay.prototype.onAdd = function() {
-    //    var div = document.createElement('div');
-    //    div.style.borderstyle = 'none';
-    //    div.style.borderWidth = '0px';
-    //    div.style.position = 'absolute';
-    //
-    //    // Create the canvas element and attach it to the div.
-    //    var canvas = document.createElement('canvas');
-    //    canvas.id = 'heat';
-    //    canvas.style.width = '100%';
-    //    canvas.style.height = '100%';
-    //
-    //    var ctx = canvas.getContext('2d');
-    //    ctx.beginPath();
-    //    ctx.arc(20, 20, 50, 0, 2 * Math.PI, false);
-    //    ctx.fillStyle = 'green';
-    //    ctx.fill();
-    //    ctx.lineWidth = 5;
-    //    ctx.strokeStyle = '#003300';
-    //    ctx.stroke();
-    //
-    //    this.canvas_ = canvas;
-    //    div.appendChild(canvas);
-    //    this.div_ = div;
-    //
-    //    // Add the element to the "overlayLayer" pane.
-    //    var panes = this.getPanes();
-    //    panes.overlayLayer.appendChild(div);
-    //};
-    //
-    //canvasOverlay.prototype.draw = function() {
-    //
-    //    // We use the south-west and north-east coordinates
-    //    // to peg it to the correct position and size. To do this,
-    //    // we need to retrieve the projection from the overlay.
-    //    var overlayProjection = this.getProjection();
-    //
-    //    // Retrieve the south-west and north-east coords of this overlay
-    //    // in LatLngs and convert them to pixel coordinates.
-    //    // We'll use these coordinates to resize the div.
-    //    var sw = overlayProjection.fromLatLngToDivPixel(this.bounds_.getSouthWest());
-    //    var ne = overlayProjection.fromLatLngToDivPixel(this.bounds_.getNorthEast());
-    //
-    //    // Resize the canvas div to fit the indicated dimensions.
-    //    var div = this.div_;
-    //    div.style.left = sw.x + 'px';
-    //    div.style.top = ne.y + 'px';
-    //    div.style.width = (ne.x - sw.x) + 'px';
-    //    div.style.height = (sw.y - ne.y) + 'px';
-    //    $('#heat').width = $('#map-canvas').width();
-    //    $('#heat').height = $('#map-canvas').height();
-    //};
-    //
-    //// The onRemove() method will be called automatically from the API if 
-    //// we ever set the overlay's map property to 'null'.
-    //canvasOverlay.prototype.onRemove = function() {
-    //    this.div_.parentNode.removeChild(this.div_);
-    //    this.div_ = null;
-    //};
-
-    google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListener(window, 'load', initialize);
