@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html>
 <body>
@@ -16,7 +15,7 @@ function(/* function */ callback, /* DOMElement */ element){
 window.setTimeout(callback, 1000 / 60);
 };
 })();
-
+var timeout = new Date().getTime() + .15*60*1000; // 30 sec
 
 // example code from mr doob : http://mrdoob.com/lab/javascript/requestanimationframe/
 
@@ -24,8 +23,8 @@ var canvas, context, toggle;
 
 init();
 var i = 0;
-//var centroids = [10,9,8,7,6,5,4,3,2,1];
-animate();
+var centroids = [10,9,8,7,6,5,4,3,2,1];
+animate(centroids);
 
 function init() {
 
@@ -39,10 +38,12 @@ document.body.appendChild( canvas );
 
 }
 
-function animate() {
-draw(300, 200, 50, 0.3);
-requestAnimFrame( animate);
 
+function animate(centroids) {
+draw(300, 200, 50, 0.3,centroids[i]);
+var requestId = requestAnimFrame( animate);
+if(new Date().getTime() > timeout) // measure the length of the function and stop it.
+    canvas.width = canvas.width;
 }
 
 
@@ -56,13 +57,11 @@ var c;
 
     if(centroidsR <=5) 
     {
-        //alert(".");
         c = randomColor({hue: 'blue', count: 18})[0];
         gradient1.addColorStop(0, "blue");
         gradient1.addColorStop(1, c);
     } 
     else{
-        //alert(".");
         c = randomColor({hue: 'red', count: 18})[0];
         gradient1.addColorStop(0, "red");
         gradient1.addColorStop(1, c);
@@ -75,6 +74,7 @@ var c;
     context.arc( x, y, radius, 0, Math.PI * 2, true );
     context.closePath();
     context.fill();
+
     
 
 }
