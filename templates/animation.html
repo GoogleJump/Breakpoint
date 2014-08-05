@@ -19,10 +19,8 @@ var timeout = new Date().getTime() + .05*60*1000; // 30 sec
 // example code from mr doob : http://mrdoob.com/lab/javascript/requestanimationframe/
 
 var canvas, context, toggle;
-
+var centroids=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 init();
-var i = 0;
-//var centroids = [10,9,8,7,6,5,4,3,2,1];
 animate();
 
 function init() {
@@ -34,19 +32,24 @@ canvas.height = 512;
 context = canvas.getContext( '2d' );
 
 document.body.appendChild( canvas );
-}
+} 
 
 
 function animate() {
-draw(300, 200, 50, 0.5,6);
-var requestId = requestAnimFrame( animate);
-    if(new Date().getTime() > timeout){ // measure the length of the function and stop it.
-        context.clearRect(0,0,canvas.width,canvas.height); 
-        console.log(canvas.width)  
-        draw(300,200,50,0.5,5); 
-    }
+	for(var i=0; i<10; i++) {
+		
+		draw(300, 200, 30, 0.5, centroids[i]);
+		console.log(i);
+	}
+//draw(200, 200, 50, 0.5,5);
+var requestId = requestAnimFrame(animate);
+    // if(new Date().getTime() > timeout){ // measure the length of the function and stop it.
+    //     context.clearRect(0,0,canvas.width,canvas.height);  
+    //     //draw(300,200,50,0.5,4); 
+    // }
 }
 
+//lower centroid number/lower intensity, darker color shade
 function draw(x, y, radius, opacity, centroids) {
 
 var gradient1 = context.createRadialGradient(x, y, radius/3, x, y, radius);
@@ -80,7 +83,7 @@ var c;
     else if(centroids ==5) 
     {
         c = randomColor({hue: 'orange', count: 18})[0];
-        gradient1.addColorStop(0, "orange");
+        gradient1.addColorStop(0, "#FF6600");
         gradient1.addColorStop(1, c);
     }
     else{
