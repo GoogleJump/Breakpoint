@@ -22,7 +22,7 @@ var cachedBox = [[0, 0], [0, 0]];
 function updateCache() {
     var bounds = map.getBounds();
     // TODO make this factor of zoom
-    CACHE_SCOPE = 2;
+    CACHE_SCOPE = .5;
     cachedBox[0][0] = bounds.xa.k - CACHE_SCOPE;
     cachedBox[0][1] = bounds.xa.j + CACHE_SCOPE;
     cachedBox[1][0] = bounds.pa.k + CACHE_SCOPE;
@@ -52,12 +52,20 @@ function updateCache() {
 
 function needsUpdate() {
     var bounds = map.getBounds();
-    console.log("lower lat bound: " + bounds.xa.k);
-    return 
-    (cachedBox[0][0] >= bounds.xa.k) || 
-    (cachedBox[0][1] <= bounds.xa.j) || 
-    (cachedBox[1][0] <= bounds.pa.k) || 
-    (cachedBox[1][1] >= bounds.pa.j);
+    //console.log("xaK bd: " + cachedBox[0][0] >= bounds.xa.k);
+    // splitting these up instead of doing it all in one line since
+    // somehow this avoids returning undefined...
+    var corner1 = cachedBox[0][0] >= bounds.xa.k;
+    var corner2 = cachedBox[0][1] <= bounds.xa.j;
+    var corner3 = cachedBox[1][0] <= bounds.pa.k;
+    var corner4 = cachedBox[1][1] >= bounds.pa.j;
+    //console.log("corner1 " + corner1);
+    //console.log("corner2 " + corner2);
+    //console.log("corner3 " + corner3);
+    //console.log("corner4 " + corner4);
+    var bool = corner1 || corner2 || corner3 || corner4;
+    //console.log("bool: " + bool);
+    return bool;
 }
 
 function initialize() {
@@ -112,8 +120,6 @@ function update() {
     // we like our rectangles green
     context.fillStyle = 'rgba(0, 255, 0, 1)';
 
-    
-
     /* We need to scale and translate the map for current view.
      * see https://developers.google.com/maps/documentation/javascript/maptypes#MapCoordinates
      */
@@ -141,10 +147,10 @@ function update() {
     var worldPoint = mapProjection.fromLatLngToPoint(rectLatLng);
     context.fillRect(worldPoint.x, worldPoint.y, rectWidth, rectWidth);
     
+    //console.log(needsUpdate());
     if (needsUpdate()) {
         updateCache();
     }
-    console.log("canvas is updating!");
 }
 
 
