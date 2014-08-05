@@ -25,9 +25,9 @@ function animate(count) {
             draw(
                 song['location']['coordinates'][1],
                 song['location']['coordinates'][0], 
-                50, 
-                0.3, 
-                song['centroids'][count], 
+                0.1, 
+                0.9, 
+                song['centroids'][count]/50, 
                 song['volumes'][count]);
             song['duration'] -= 1.0 / 60.0;
         }
@@ -41,12 +41,14 @@ function animate(count) {
 
 // TODO singular centroid, volume
 function draw(x, y, radius, opacity, centroids,volumes) {
-    var gradient1 = context.createRadialGradient(x, y, radius/3, x, y, radius);
+    var mapProjection = map.getProjection();
+    var loc = new google.maps.LatLng(x, y);
+    var worldPoint = mapProjection.fromLatLngToPoint(loc);
+    var gradient1 = context.createRadialGradient(worldPoint.x,worldPoint.y, radius/3, worldPoint.x, worldPoint.y, radius);
     var c;
     // FIXME refactor; too much repeated code
     //Centroids conditionals
     if (centroids <=20) {
-        //alert(".");
         c = randomColor({hue: 'purple', count: 18})[0];
         gradient1.addColorStop(0, "purple");
         gradient1.addColorStop(1, c); 
@@ -76,33 +78,37 @@ function draw(x, y, radius, opacity, centroids,volumes) {
         gradient1.addColorStop(0, "red");
         gradient1.addColorStop(1, c); 
     }
+
+
     //Volume Conditionals.
-    if(volumes <= 20) {
-        radius = 10;
-    }
-    if(volumes > 20 && volumes <=40) {
-        radius = 20;
-    } 
-    if(volumes > 40 && volumes <=60) {
-        radius = 30;
-    } 
-    if (volumes > 60 && volumes <=80) {
-        radius = 40;
-    } 
-    if (volumes > 80 && volumes <=100) {
-        radius = 50;
-    } 
-    if(volumes > 100) {
-        radius = 60;
-    }
+    // if(volumes <= 20) {
+    //     radius = 10;
+    // }
+    // if(volumes > 20 && volumes <=40) {
+    //     radius = 20;
+    // } 
+    // if(volumes > 40 && volumes <=60) {
+    //     radius = 30;
+    // } 
+    // if (volumes > 60 && volumes <=80) {
+    //     radius = 40;
+    // } 
+    // if (volumes > 80 && volumes <=100) {
+    //     radius = 50;
+    // } 
+    // if(volumes > 100) {
+    //     radius = 60;
+    // }
+
+
+        // gradient1.addColorStop(0, "orange");
+        // gradient1.addColorStop(1, "blue"); 
 
     context.fillStyle = gradient1;
     context.globalAlpha=opacity; //this is the opacity
     context.beginPath();
     //var worldPoint = mapProjection.fromLatLngToPoint(rectLatLng)
-    var mapProjection = map.getProjection();
-    var loc = new google.maps.LatLng(x, y);
-    var worldPoint = mapProjection.fromLatLngToPoint(loc);
+    
     context.arc(worldPoint.x, worldPoint.y, radius, 0, Math.PI * 2, true);
     context.closePath();
     context.fill();
