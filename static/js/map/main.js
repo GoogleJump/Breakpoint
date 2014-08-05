@@ -23,8 +23,8 @@ function animate(count) {
     songs.forEach(function(song) {
         if (song['duration'] > 0) {
             draw(
-                song['location']['coordinates'][0],
-                song['location']['coordinates'][1], 
+                song['location']['coordinates'][1],
+                song['location']['coordinates'][0], 
                 50, 
                 0.3, 
                 song['centroids'][count], 
@@ -35,7 +35,7 @@ function animate(count) {
 
     var requestId = requestAnimFrame( function() {
         count++;
-        animate(count)
+        animate(count);
     });
 }
 
@@ -100,7 +100,9 @@ function draw(x, y, radius, opacity, centroids,volumes) {
     context.globalAlpha=opacity; //this is the opacity
     context.beginPath();
     //var worldPoint = mapProjection.fromLatLngToPoint(rectLatLng)
-    var worldPoint = mapProjection.fromLatLngToPoint(x, y);
+    var mapProjection = map.getProjection();
+    var loc = new google.maps.LatLng(x, y);
+    var worldPoint = mapProjection.fromLatLngToPoint(loc);
     context.arc(worldPoint.x, worldPoint.y, radius, 0, Math.PI * 2, true);
     context.closePath();
     context.fill();
@@ -154,18 +156,6 @@ function needsUpdate() {
     return bool;
 }
 
-function arrayUnique(array) {
-    var a = array.concat();
-    for(var i=0; i<a.length; ++i) {
-        for(var j=i+1; j<a.length; ++j) {
-            if(a[i] === a[j])
-                a.splice(j--, 1);
-        }
-    }
-
-    return a;
-};
-
 function initialize() {
 
     var mapOptions = {
@@ -202,7 +192,10 @@ function initialize() {
     canvasLayer = new CanvasLayer(canvasLayerOptions);
     context = canvasLayer.canvas.getContext('2d');
 
-    animate(0);
+    google.maps.event.addListenerOnce(map, 'idle', function() {
+        // do something only the first time the map is loaded
+        animate(0);
+    });
 } 
 
 
@@ -226,7 +219,7 @@ function update() {
     /* We need to scale and translate the map for current view.
      * see https://developers.google.com/maps/documentation/javascript/maptypes#MapCoordinates
      */
-    mapProjection = map.getProjection();
+    var mapProjection = map.getProjection();
 
     /**
      * Clear transformation from last update by setting to identity matrix.
@@ -257,3 +250,4 @@ function update() {
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
