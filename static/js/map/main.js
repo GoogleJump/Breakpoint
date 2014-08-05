@@ -16,7 +16,49 @@ var canvasLayer;
 var context;
 var rectLatLng = new google.maps.LatLng(40, -95);
 var rectWidth = 6.5;
+var songs = [];
+var cachedBox = [[0, 0], [0, 0]]; 
 
+function updateCache() {
+    var bounds = map.getBounds();
+    // TODO make this factor of zoom
+    CACHE_SCOPE = 2;
+    cachedBox[0][0] = bounds.xa.k - CACHE_SCOPE;
+    cachedBox[0][1] = bounds.xa.j + CACHE_SCOPE;
+    cachedBox[1][0] = bounds.pa.k + CACHE_SCOPE;
+    cachedBox[1][1] = bounds.pa.j - CACHE_SCOPE; 
+    console.log("almost about to make a request..");
+    // TODO actually send request
+    //requestData = {
+    //    box: [[10, 20], [30, 40]],
+    //    zoom: 17
+    //}
+    //$.ajax({
+    //        type: "POST",
+    //        url: "/query",
+    //        data: JSON.stringify(requestData),
+    //        contentType: "application/json; charset=utf-8",
+    //        dataType: "json",
+    //        success: function(data){
+    //            console.log("server response to db query:");
+    //            console.log(data);
+    //        },
+    //        failure: function(err){
+    //            console.log("failed to ajax");
+    //            console.log(err);
+    //        }
+    //});
+}
+
+function needsUpdate() {
+    var bounds = map.getBounds();
+    console.log("lower lat bound: " + bounds.xa.k);
+    return 
+    (cachedBox[0][0] >= bounds.xa.k) || 
+    (cachedBox[0][1] <= bounds.xa.j) || 
+    (cachedBox[1][0] <= bounds.pa.k) || 
+    (cachedBox[1][1] >= bounds.pa.j);
+}
 
 function initialize() {
 
@@ -35,57 +77,32 @@ function initialize() {
         document.getElementById("map-canvas"), 
         mapOptions);
 
-        var swBound = new google.maps.LatLng(-34.397, 150.644);
-        var neBound = new google.maps.LatLng(-34.3, 150.9);
-        var bounds = new google.maps.LatLngBounds(swBound, neBound);
+    function resizeMap() {
+        $('#map-canvas').height($(window).height());
+        $('#map-canvas').width($(window).width());
+    }
 
-        //overlay = new canvasOverlay(bounds, map);
-
-        function resizeMap() {
-            $('#map-canvas').height($(window).height());
-            $('#map-canvas').width($(window).width());
-        }
-
-        resizeMap();
+    resizeMap();
 
 
-        $(window).resize(resizeMap);
-        // initialize the canvasLayer
-        var canvasLayerOptions = {
-            map: map,
-            resizeHandler: resize,
-            animate: false,
-            updateHandler: update
-        };
-        canvasLayer = new CanvasLayer(canvasLayerOptions);
-        context = canvasLayer.canvas.getContext('2d');
-}
+    $(window).resize(resizeMap);
+    // initialize the canvasLayer
+    var canvasLayerOptions = {
+        map: map,
+        resizeHandler: resize,
+        animate: false,
+        updateHandler: update
+    };
+    canvasLayer = new CanvasLayer(canvasLayerOptions);
+    context = canvasLayer.canvas.getContext('2d');
+} 
 
 function resize() {
     // nothing to do here
 }
 
 function update() {
-    console.log("canvas is updating!");
-    requestData = {
-        box: [[10, 20], [30, 40]],
-        zoom: 17
-    }
-    $.ajax({
-            type: "POST",
-            url: "/query",
-            data: JSON.stringify(requestData),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function(data){
-                console.log("server response to db query:");
-                console.log(data);
-            },
-            failure: function(err){
-                console.log("failed to ajax");
-                console.log(err);
-            }
-    });
+
 
     // clear previous canvas contents
     var canvasWidth = canvasLayer.canvas.width;
@@ -123,6 +140,11 @@ function update() {
     // project rectLatLng to world coordinates and draw
     var worldPoint = mapProjection.fromLatLngToPoint(rectLatLng);
     context.fillRect(worldPoint.x, worldPoint.y, rectWidth, rectWidth);
+    
+    if (needsUpdate()) {
+        updateCache();
+    }
+    console.log("canvas is updating!");
 }
 
 
