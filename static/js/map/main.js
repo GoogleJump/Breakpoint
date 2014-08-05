@@ -40,7 +40,6 @@ function updateCache() {
             success: function(data){
                 console.log("server response to db query:");
                 console.log(data);
-                songs = arrayUnique(songs.concat(data));
             },
             failure: function(err){
                 console.log("failed to ajax");

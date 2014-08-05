@@ -7,6 +7,7 @@ from urllib2 import urlopen
 from jinja2 import Template
 import datetime
 from json import dumps
+import uuid
 
 # Note: To deal with potential username spoofing, check the username
 # in the session with every action that actually does something
@@ -50,6 +51,7 @@ class Bite(db.Document):
     start_time = db.DateTimeField()
     duration = db.FloatField()
     username = db.StringField()
+    unique = db.StringField()
 
 # Setup Flask-Security
 user_datastore = MongoEngineUserDatastore(db, User, Role)
@@ -66,6 +68,8 @@ def audio():
 
 @app.route('/map')
 def map():
+    if 'added' not in session:
+        session['added'] = []
     #print Bite.objects
     #for bite in Bite.objects:
     #    print bite
@@ -91,17 +95,16 @@ def map():
 # For now, we'll just return all of them...
 @app.route("/query", methods=['POST'])
 def query():
-    # TODO query based on json input
     json = request.get_json()
     box = json['box']
     print "bounding box: ", box
-    #should query for points within the latlong box
-    print "zoom level: ", json['zoom']
-    #box = [(0, 90), (0, 90)]
-    #print "queries: ", Bite.objects(location__geo_within_box=[(-125.0, 35.0), (-100.0, 40.0)])
-    #print "queries i am returning: ", Bite.objects(location__geo_within_box=box)
+    # ensure that box objects are not sent multiple times
+    box_songs = Bite.objects(location__geo_within_box=box)
+    box_songs = [s for s in box_songs if s.unique not in session['added']]
+    session['added'] += [s.unique for s in box_songs]
+    #box_songs = [s for s in Bite.objects(location__geo_within_box) if s.unique not in session
     songs = []
-    for bite in Bite.objects(location__geo_within_box=box):
+    for bite in box_songs:
         song = {}
         song['centroids'] = bite.centroids
         song['volumes'] = bite.volumes
@@ -124,40 +127,29 @@ def upload():
         # we can get the duration by dividing # of centroids
         # by 1s / 20ms
         my_duration=len(json['centroids'])/50.0
-        print "centroids", json['centroids']
-        print "volumes", json['volumes']
-        print "latitude", json['latitude']
-        print "longitude", json['longitude']
-        print "start_time", datetime.datetime.now()
-        print "duration", my_duration
-        print "duration type: ", type(my_duration)
+        #print "centroids", json['centroids']
+        #print "volumes", json['volumes']
+        #print "latitude", json['latitude']
+        #print "longitude", json['longitude']
+        #print "start_time", datetime.datetime.now()
+        #print "duration", my_duration
+        #print "duration type: ", type(my_duration)
         bite = Bite(
                 centroids=json['centroids'],
                 volumes=json['volumes'],
                 location=[json['longitude'], json['latitude']],
                 start_time=datetime.datetime.now(),
                 duration=my_duration,
-                username=session['username']
+                username=session['username'],
+                unique=str(uuid.uuid1())
                 )
         print "token", json['token']
         print "username hash", hash(session['username'] + SECRET_KEY)
         if json['token'] == str(hash(session['username'] + SECRET_KEY)):
             bite.save()
         else:
-            print "what are you doing!?!?!"
-
-
-#testBite = Bite(centroids=[1, 2], volumes=[1, 2], duration=0)
-#testBite.save()
+            return "what are you doing!?!?!"
         return jsonify(placeholder=True)
-    #params = request.getParams()
-    #lat = param['lat']
-    #lon = param['lon']
-    #amp = param['amp']
-    #freq = param['freq']
-    #database.add(lat, lon, amp, freq)
-    #return render_template('map.html')
-    # TODO parse request params, store in database
     return jsonify(placeholder=True)
 
 @app.route('/delete')
@@ -171,7 +163,6 @@ def register():
         password = request.form['password']
         user_datastore.create_user(email=email, password=str(hash(password)))
         return redirect(url_for('map'))
-    # TODO figure out what to do here.
     # also TODO what happens in user already exists case?
     return "404"
 
@@ -185,11 +176,11 @@ def login():
             session['username'] = username
             return redirect(url_for('map'))
         else:
-            # TODO do something sensible
             return "404 incorrect password"
         session['username'] = request.form['username']
         return redirect(url_for('map'))
     elif request.method == 'GET':
+        # TODO security someone could spoof a username..
         session['username'] = request.args.get('user')
         # when does it fail? idk
         return jsonify(
