@@ -23,9 +23,11 @@ var canvas, context, toggle;
 init();
 var count = 0;
 var centroids = new Array(120);
+var volumes = new Array(120);
 for(var i=0;i<120;i++)
 {
 	centroids[i] = i;
+	volumes[i] = i;
 }
 animate(count);
 
@@ -43,7 +45,7 @@ document.body.appendChild( canvas );
 
 
 function animate(count) {
-	draw(400, 200, 50, 0.3,centroids[count]);
+	draw(400, 200, 50, 0.3,centroids[count],volumes[count]);
 	console.log(centroids[count]);
 	var requestId = requestAnimFrame( function() {
 	count++;
@@ -56,14 +58,11 @@ function animate(count) {
 
 
 
-function draw(x, y, radius, opacity, centroids) {
+function draw(x, y, radius, opacity, centroids,volumes) {
 
 var gradient1 = context.createRadialGradient(x, y, radius/3, x, y, radius);
-//var centroidsR =6;
 var c;
-    
-
-
+    //Centroids conditionals
 	if(centroids <=20) 
 	{
 		//alert(".");
@@ -104,6 +103,36 @@ var c;
 		gradient1.addColorStop(1, c); 
 	
 	}
+
+	//Volume Conditionals.
+
+	if(volumes <=20) 
+	{
+		radius = 10;
+	}
+	if(volumes >20 && volumes <=40)
+	{
+		radius = 20;
+	} 
+	if(volumes >40 && volumes <=60)
+	{
+		radius = 30;
+	} 
+	if(volumes >60 && volumes <=80)
+	{
+		radius = 40;
+	} 
+	if(volumes >80 && volumes <=100)
+	{
+		radius = 50;
+	} 
+
+	if(volumes>100){
+		
+		radius = 60;
+	}
+
+
 
 	context.fillStyle = gradient1;
 	context.globalAlpha=opacity; //this is the opacity
