@@ -1,5 +1,5 @@
 // global variables are bad yeah
-var ROOT_URL = 'http://127.0.0.1:9999/'
+var ROOT_URL = 'http://cafedaydream.com/'
 var username = "";
 function signinCallback(authResult) {
     if (authResult['status']['signed_in']) {

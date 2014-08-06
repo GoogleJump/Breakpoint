@@ -66,7 +66,7 @@ function exportWAV(type){
   var callback = function() {
       console.log(JSON.parse(this.responseText));
   }
-  var ROOT_URL = 'http://127.0.0.1:9999'
+  var ROOT_URL = 'http://cafedaydream.com'
   //makeRequest(ROOT_URL + "/upload", 'nope', callback);
   console.log("export audio tiem?")
   this.postMessage(audioBlob);
