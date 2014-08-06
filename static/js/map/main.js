@@ -198,7 +198,7 @@ function initialize() {
 
     var mapOptions = {
         center: new google.maps.LatLng(37.389444, -122.081944),
-        zoom: 8,
+        zoom: 4,
         mapTypeControl: true,
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,

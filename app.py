@@ -141,7 +141,7 @@ def upload():
         bite = Bite(
                 centroids=json['centroids'],
                 volumes=json['volumes'],
-                location=[json['longitude'], json['latitude']],
+                location=[-118.25, 34.05],
                 start_time=datetime.datetime.now(),
                 duration=my_duration,
                 username=session['username'],
@@ -149,8 +149,9 @@ def upload():
                 )
         print "token", json['token']
         print "username hash", hash(session['username'] + SECRET_KEY)
-        #print "the deal: ", json['token'] == str(hash(session['username'] + SECRET_KEY))
-        if json['token'] == hash(session['username'] + SECRET_KEY):
+        print "the deal: ", json['token'] == str(hash(session['username'] + SECRET_KEY))
+        # long story, double str cast... 
+        if str(json['token']) == str(hash(session['username'] + SECRET_KEY)):
             bite.save()
             print "I definitely saved the bite..."
         else:
