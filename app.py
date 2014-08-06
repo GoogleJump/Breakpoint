@@ -16,7 +16,7 @@ import uuid
 # Create app
 app = Flask(__name__)
 # FIXME: Disable debug mode in prodoction!
-app.config['DEBUG'] = True
+app.config['DEBUG'] = False
 app.config['SECRET_KEY'] = 'replace_me_eventually'
 
 # MongoDB config
@@ -68,8 +68,8 @@ def audio():
 
 @app.route('/map')
 def map():
-    if 'added' not in session:
-        session['added'] = []
+    #if 'added' not in session:
+    #    session['added'] = []
     #print Bite.objects
     #for bite in Bite.objects:
     #    print bite
@@ -131,13 +131,13 @@ def upload():
         # we can get the duration by dividing # of centroids
         # by 1s / 20ms
         my_duration=len(json['centroids'])/50.0
-        #print "centroids", json['centroids']
-        #print "volumes", json['volumes']
-        #print "latitude", json['latitude']
-        #print "longitude", json['longitude']
-        #print "start_time", datetime.datetime.now()
-        #print "duration", my_duration
-        #print "duration type: ", type(my_duration)
+        print "centroids", json['centroids']
+        print "volumes", json['volumes']
+        print "latitude", json['latitude']
+        print "longitude", json['longitude']
+        print "start_time", datetime.datetime.now()
+        print "duration", my_duration
+        print "duration type: ", type(my_duration)
         bite = Bite(
                 centroids=json['centroids'],
                 volumes=json['volumes'],
@@ -149,8 +149,10 @@ def upload():
                 )
         print "token", json['token']
         print "username hash", hash(session['username'] + SECRET_KEY)
-        if json['token'] == str(hash(session['username'] + SECRET_KEY)):
+        #print "the deal: ", json['token'] == str(hash(session['username'] + SECRET_KEY))
+        if json['token'] == hash(session['username'] + SECRET_KEY):
             bite.save()
+            print "I definitely saved the bite..."
         else:
             return "what are you doing!?!?!"
         return jsonify(placeholder=True)
