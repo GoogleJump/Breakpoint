@@ -19,25 +19,44 @@ var rectWidth = 6.5;
 var songs = [];
 var cachedBox = [[0, 0], [0, 0]]; 
 
-function animate(count) {
+function animate(count, i) {
     songs.forEach(function(song) {
         if (song['duration'] > 0) {
             draw(
                 song['location']['coordinates'][1],
                 song['location']['coordinates'][0], 
                 0.1, 
-                0.9, 
-                song['centroids'][count]/50, 
+                1, 
+                song['centroids'][count], 
                 song['volumes'][count]);
             song['duration'] -= 1.0 / 60.0;
         }
     });
-
+    
     var requestId = requestAnimFrame( function() {
-        count++;
-        animate(count);
-    });
-}
+        if(i==10) {
+            count++;
+            i=0;
+        }
+        else {
+            i++;
+        }
+        animate(count, i);
+       context.beginPath(); 
+       context.fillStyle = 'white'; 
+       context.rect(0, 0,canvasLayer.width, canvasLayer.height); 
+       context.fill();
+       context.closePath();
+        // Store the current transformation matrix
+        // context.save();
+        // // Use the identity matrix while clearing the canvas
+        // context.setTransform(1, 0, 0, 1, 0, 0);
+         //context.clearRect(0, 0, canvasLayer.width, canvasLayer.height);
+
+        // Restore the transform
+        //context.restore();
+        });
+        }
 
 // TODO singular centroid, volume
 function draw(x, y, radius, opacity, centroids,volumes) {
@@ -46,69 +65,82 @@ function draw(x, y, radius, opacity, centroids,volumes) {
     var worldPoint = mapProjection.fromLatLngToPoint(loc);
     var gradient1 = context.createRadialGradient(worldPoint.x,worldPoint.y, radius/3, worldPoint.x, worldPoint.y, radius);
     var c;
+    var r;
     // FIXME refactor; too much repeated code
     //Centroids conditionals
-    if (centroids <=20) {
-        c = randomColor({hue: 'purple', count: 18})[0];
-        gradient1.addColorStop(0, "purple");
-        gradient1.addColorStop(1, c); 
-    }
-    if (centroids >20 && centroids <=40) {
-        c = randomColor({hue: 'purple', count: 18})[0];
-        gradient1.addColorStop(0, "blue");
-        gradient1.addColorStop(1, c); 
-    } 
-    if (centroids >40 && centroids <=60) {
+    // if (centroids <=20) {
+    //     c = randomColor({hue: 'purple', count: 18})[0];
+    //     gradient1.addColorStop(0, "purple");
+    //     gradient1.addColorStop(1, c); 
+    // }
+    // if (centroids >20 && centroids <=40) {
+    //     c = randomColor({hue: 'purple', count: 18})[0];
+    //     gradient1.addColorStop(0, "blue");
+    //     gradient1.addColorStop(1, c); 
+    // } 
+    if (centroids <=1500) {
         c = randomColor({hue: 'blue', count: 18})[0];
-        gradient1.addColorStop(0, "green");
+        gradient1.addColorStop(0, "#000066");
         gradient1.addColorStop(1, c); 
     } 
-    if (centroids >60 && centroids <=80) {
+    if (centroids >1500 && centroids <=3000) {
         c = randomColor({hue: 'green', count: 18})[0];
-        gradient1.addColorStop(0, "yellow");
+        gradient1.addColorStop(0, "#66C285");
         gradient1.addColorStop(1, c); 
     }
-    if (centroids>80 && centroids <=100) {
+    if (centroids>3000 && centroids <=5000) {
         c = randomColor({hue: 'yellow', count: 18})[0];
         gradient1.addColorStop(0, "orange");
         gradient1.addColorStop(1, c); 
     }
-    if (centroids>100) {
+    if (centroids>5000) {
         c = randomColor({hue: 'orange', count: 18})[0];
         gradient1.addColorStop(0, "red");
         gradient1.addColorStop(1, c); 
     }
 
 
+    // if (centroids <= 2000) {
+    //     c = randomColor({hue: 'green', count: 18})[0];
+    //     gradient1.addColorStop(0, "#66C285");
+    //     gradient1.addColorStop(1, c); 
+    // }
+    // if (centroids>2000 && centroids <=4000) {
+    //     c = randomColor({hue: 'yellow', count: 18})[0];
+    //     gradient1.addColorStop(0, "orange");
+    //     gradient1.addColorStop(1, c); 
+    // }
+    // if (centroids>4000) {
+    //     c = randomColor({hue: 'orange', count: 18})[0];
+    //     gradient1.addColorStop(0, "red");
+    //     gradient1.addColorStop(1, c); 
+    // }
+
+
     //Volume Conditionals.
-    // if(volumes <= 20) {
-    //     radius = 10;
+    // if(volumes <= 7000) {
+    //     r = 0.02;
     // }
-    // if(volumes > 20 && volumes <=40) {
-    //     radius = 20;
+    // if(volumes > 7000 && volumes <=10000) {
+    //     r = 0.05;
     // } 
-    // if(volumes > 40 && volumes <=60) {
-    //     radius = 30;
+    // if(volumes > 10000 && volumes <=20000) {
+    //     r = 0.1;
     // } 
-    // if (volumes > 60 && volumes <=80) {
-    //     radius = 40;
+    // if (volumes > 20000 && volumes <=30000) {
+    //     r = 0.5;
     // } 
-    // if (volumes > 80 && volumes <=100) {
-    //     radius = 50;
+    // if (volumes > 30000 && volumes <=37000) {
+    //     r = 1;
     // } 
-    // if(volumes > 100) {
-    //     radius = 60;
+    // if(volumes > 37000) {
+    //     r = 1;
     // }
-
-
-        // gradient1.addColorStop(0, "orange");
-        // gradient1.addColorStop(1, "blue"); 
 
     context.fillStyle = gradient1;
     context.globalAlpha=opacity; //this is the opacity
     context.beginPath();
     //var worldPoint = mapProjection.fromLatLngToPoint(rectLatLng)
-    
     context.arc(worldPoint.x, worldPoint.y, radius, 0, Math.PI * 2, true);
     context.closePath();
     context.fill();
@@ -200,7 +232,7 @@ function initialize() {
 
     google.maps.event.addListenerOnce(map, 'idle', function() {
         // do something only the first time the map is loaded
-        animate(0);
+        animate(0,0);
     });
 } 
 
