@@ -113,6 +113,7 @@ function toggleRecording() {
 function analyze() {
     var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
     analyserNode.getByteFrequencyData(freqByteData); 
+    // convert typed array to normal array
     freqByteData = Array.apply( [], freqByteData);
     //console.log(freqByteData);
     var volume = freqByteData.reduce(function(a, b) {
