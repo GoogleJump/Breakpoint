@@ -92,6 +92,7 @@ function toggleRecording() {
             success: function(data){
                 console.log("successfully sent audio data");
                 console.log(data);
+                window.location.href = '/map';
             },
             failure: function(err){
                 console.log("failed to send data");

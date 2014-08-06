@@ -141,7 +141,7 @@ def upload():
         bite = Bite(
                 centroids=json['centroids'],
                 volumes=json['volumes'],
-                location=[-118.25, 34.05],
+                location=[-95.3831, 29.7628],
                 start_time=datetime.datetime.now(),
                 duration=my_duration,
                 username=session['username'],
